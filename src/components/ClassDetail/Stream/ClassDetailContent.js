@@ -49,6 +49,18 @@ const ClassDetail = () => {
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
       <Container sx={{ width: "80vw" }}>
+        <Container sx={{ width: "100%", height: "200px", paddingLeft: '0!important', paddingRight: '0!important',display:'flex',justifyContent:'center' }}>
+          <img
+            style={{
+
+              width: "100%",
+              height: "auto",
+              overflow:'hidden'
+            }}
+            src="/images/empty-classroom.jpg"
+            alt=""
+          />
+        </Container>
         <TextField
           label="Announce something for your class"
           multiline

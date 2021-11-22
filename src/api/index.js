@@ -143,6 +143,25 @@ export const getAllAccountFromClass = async (id) => {
 
   return data;
 };
+//Check teacher
+export const CheckTeacher = async (id) => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/classesaccount/checkTeacher/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
 
 // Login API ---------------------------------------------------------------------------
 export const Login = async (name, password) => {
@@ -186,3 +205,4 @@ export const Register = async (
   if (message != null) return message;
   return test.data;
 };
+

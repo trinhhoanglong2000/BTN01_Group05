@@ -296,7 +296,10 @@ function Register() {
             fullWidth
             sx={{
               borderRadius: 5,
-              background: "linear-gradient(to right, #536976, #292e49);",
+              background: "#3C403D",
+                "&:hover": {
+                  background: "#3C403D",
+                },
               marginBottom: 1,
               marginTop: 1,
             }}

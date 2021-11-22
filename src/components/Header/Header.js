@@ -14,14 +14,19 @@ import Logout from "@mui/icons-material/Logout";
 import IconButton from "@mui/material/IconButton";
 
 import Avatar from "@mui/material/Avatar";
-import { useNavigate, Navigate } from "react-router";
+import { useNavigate, Navigate, useParams } from "react-router";
 import { default as Drawer } from "../Drawer/Drawer";
 
 import { getAccount } from "../../api";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { default as ManageAccount } from "./Dialog/ManageAccount";
+
+import ColorToggleButton from "./ToggleButton/ToggleButton";
 export default function Header() {
+  const params = useParams();
+  console.log(params.id);
+
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [auth, setAuth] = useState(true);
@@ -38,10 +43,9 @@ export default function Header() {
     localStorage.clear();
     navigate("/login");
   };
-  const editprofile = ()=>{
-    setOpenDialog(true)
-    
-  }
+  const editprofile = () => {
+    setOpenDialog(true);
+  };
 
   useEffect(() => GetAccount(), []);
   const GetAccount = async () => {
@@ -61,30 +65,49 @@ export default function Header() {
   return (
     <>
       {!auth && <Navigate to="/login" />}
-      <ManageAccount open={openDialog} setOpen={setOpenDialog} account={account} setAccount={setAccount}/>
+      <ManageAccount
+        open={openDialog}
+        setOpen={setOpenDialog}
+        account={account}
+        setAccount={setAccount}
+      />
       <Box sx={{ flexGrow: 1 }}>
         <AppBar
           position="static"
           sx={{
-            background: "linear-gradient(to right, #434343 0%, black 100%);",
+            background: "#39603D",
           }}
         >
-          <Toolbar>
-            <Drawer />
+          <Toolbar sx={{ paddingLeft: "0 !important", position: "relative" }}>
+            <Toolbar sx={{ position: "absolute;", top: "0px;", left: "0px;" }}>
+              <Drawer />
 
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, color: "#FFFFFF" }}
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, color: "#FFFFFF" }}
+              >
+                Classroom
+              </Typography>
+            </Toolbar>
+            {params.id !== undefined && <ColorToggleButton sx={{margin:'0px auto;'}}/>}
+
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2,mr:2, position: "absolute", top: "0px;", right: "0px;" ,height:'100%'}}
             >
-              Classroom
-            </Typography>
-
-            {/* <Button color="inherit" sx={{ color: "#FFFFFF" }}>Login</Button> */}
-            <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+              <Avatar
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+              >
+                M
+              </Avatar>
             </IconButton>
             {/*  */}
+
             <Menu
               anchorEl={anchorEl}
               open={open}
@@ -166,9 +189,7 @@ export default function Header() {
 
               <Divider sx={{ marginBottom: "7px" }} />
 
-              <MenuItem
-                onClick={editprofile}
-              >
+              <MenuItem onClick={editprofile}>
                 <ListItemIcon>
                   <AccountCircleIcon />
                 </ListItemIcon>
@@ -198,7 +219,6 @@ export default function Header() {
           </Toolbar>
         </AppBar>
       </Box>
-     
     </>
   );
 }

@@ -52,7 +52,7 @@ export default function BasicSpeedDial() {
       className={classes.pos}
       sx={{ transform: "translateZ(0px)", flexGrow: 1 }}
     >
-      <SpeedDial FabProps={{ style: { backgroundColor: '#434343' } }} ariaLabel="SpeedDial basic example" icon={<SpeedDialIcon openIcon={<EditIcon />} />}>
+      <SpeedDial FabProps={{ style: { backgroundColor: '#3C403D',color:'white' } }} ariaLabel="SpeedDial basic example" icon={<SpeedDialIcon openIcon={<EditIcon sx={{color:'white'}}/>} />}>
         {actions.map((action) => (
           <SpeedDialAction
             onClick={action.onClick}

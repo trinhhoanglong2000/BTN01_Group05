@@ -6,13 +6,16 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import ArchiveIcon from '@mui/icons-material/Archive';
+import SettingsIcon from '@mui/icons-material/Settings';
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import { makeStyles } from "@mui/styles";
+import { useNavigate } from "react-router-dom";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import Typography from '@mui/material/Typography';
 
-import { makeStyles } from '@mui/styles'
-import { useNavigate } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: "15px",
@@ -22,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SwipeableTemporaryDrawer() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const classes = useStyles();
   const [state, setState] = React.useState({
     top: false,
@@ -43,25 +46,37 @@ export default function SwipeableTemporaryDrawer() {
     setState({ ...state, [anchor]: open });
   };
   const goHome = () => {
-    navigate('/')
-  }
+    navigate("/");
+  };
   const goShowGrade = () => {
-    navigate('/ShowGrade')
-  }
-  const item = [{
-    text: 'Classes',
-    onClick: goHome,
-  }]
-  const downItem = [{
-    text: 'Grade',
-    onClick: goShowGrade,
-  }, {
-    text: 'Sent mail',
-    onClick: goHome,
-  }, {
-    text: 'Inbox',
-    onClick: goHome,
-  }]
+    navigate("/ShowGrade");
+  };
+  const item = [
+    {
+      text: "Classes",
+      onClick: goHome,
+      icon: <HomeIcon />,
+    },
+  ];
+  const downItem = [
+    {
+      text: "Grade",
+      onClick: goShowGrade,
+      icon: <MenuBookIcon />,
+    },
+  ]
+  const settings =[
+    {
+      text: "Archived classes",
+      onClick: goHome,
+      icon: <ArchiveIcon />,
+    },
+    {
+      text: "Setting",
+      onClick: goHome,
+      icon: <SettingsIcon />,
+    },
+  ];
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -69,23 +84,33 @@ export default function SwipeableTemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+ 
       <List>
         {item.map((item, index) => (
           <ListItem button key={index} onClick={item.onClick}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+            <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.text} />
           </ListItem>
         ))}
       </List>
       <Divider />
+      <Typography variant="caption" display="block"  sx={{paddingLeft:'16px'}}>
+        Student
+      </Typography>
       <List>
         {downItem.map((text, index) => (
           <ListItem button key={text.text} onClick={text.onClick}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+            <ListItemIcon>{text.icon}</ListItemIcon>
+            <ListItemText primary={text.text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+    
+      <List>
+        {settings.map((text, index) => (
+          <ListItem button key={text.text} onClick={text.onClick}>
+            <ListItemIcon>{text.icon}</ListItemIcon>
             <ListItemText primary={text.text} />
           </ListItem>
         ))}
@@ -97,13 +122,12 @@ export default function SwipeableTemporaryDrawer() {
     <div>
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
-          <Box >
+          <Box>
             {/* {anchor} */}
             <IconButton
               onClick={toggleDrawer(anchor, true)}
               className={classes.icon}
               edge="start"
-
               aria-label="menu"
               sx={{ m: 0, p: 0 }}
             >

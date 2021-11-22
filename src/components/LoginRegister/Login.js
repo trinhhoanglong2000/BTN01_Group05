@@ -122,9 +122,10 @@ function Login() {
         <Box
           sx={{
             border: "1px solid black",
-            borderRadius: "5px",
+            borderRadius: "10px",
             width: 368,
             height: { height },
+            background:'#daded4',
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -143,6 +144,7 @@ function Login() {
             component="div"
             noWrap
             align="center"
+            sx={{ fontWeight: "lighter" }}
           >
             Sign In
           </Typography>
@@ -212,7 +214,10 @@ function Login() {
               fullWidth
               sx={{
                 borderRadius: 5,
-                background: "linear-gradient(to right, #536976, #292e49);",
+                background: "#3C403D",
+                "&:hover": {
+                  background: "#3C403D",
+                },
                 marginBottom: 1,
                 marginTop: 3,
               }}
@@ -266,7 +271,6 @@ function Login() {
               cssClass="my-facebook-button-class"
               icon="fa-facebook"
             /> */}
-           
           </Container>
         </Box>
       </Container>
