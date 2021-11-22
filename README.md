@@ -1,1 +1,2 @@
-# BTN01_Group05
+# GoogleClassroomClone
+Mid term project
