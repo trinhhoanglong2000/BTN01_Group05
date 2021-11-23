@@ -8,7 +8,7 @@ import {
   People,
   Classwork,
   ShowGrade,
-
+  GradeStructure,
 } from "./components";
 
 import { BrowserRouter as Router, Routes, Route,Outlet  } from "react-router-dom";
@@ -43,7 +43,7 @@ function App() {
           <Route path="/ClassDetail/:id" element={<ClassDetail />} />
           <Route path="/ClassDetail/:id/People" element={<People />} />
           <Route path="/ClassDetail/:id/Classwork" element={<Classwork />} />
-          
+          <Route path="/ClassDetail/:id/GradeStructure" element={<GradeStructure />} />
         </Route>
         <Route
           path="/AccessInviteLink"
