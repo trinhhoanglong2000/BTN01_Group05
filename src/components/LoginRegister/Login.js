@@ -50,9 +50,7 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  // const responseFacebook = (response) => {
-  //   console.log(response);
-  // };
+  
   const responseGoogle = async (response) => {
     if (!response.tokenId) {
       return;

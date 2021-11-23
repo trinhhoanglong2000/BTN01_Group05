@@ -48,7 +48,7 @@ const ClassDetail = () => {
       {loading && (
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
-      <Container sx={{ width: "80vw" }}>
+      <Container sx={{ width: "80vw" ,marginTop:'20px'}}>
         <Container sx={{ width: "100%", height: "200px", paddingLeft: '0!important', paddingRight: '0!important',display:'flex',justifyContent:'center' }}>
           <img
             style={{
@@ -64,7 +64,7 @@ const ClassDetail = () => {
         <TextField
           label="Announce something for your class"
           multiline
-          rows={5}
+          rows={3}
           variant="filled"
           fullWidth
         />
