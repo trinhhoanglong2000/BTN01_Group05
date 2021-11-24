@@ -10,8 +10,7 @@ const DataList = SortableContainer(({ data }) => {
 
                 return (
                     
-                        <DataElement key={key} data = {item} index = {key} />
-                   
+                        <DataElement key={key} data = {item} index = {key} /> 
                 );
             })}
         </Container>

@@ -10,6 +10,9 @@ import AddIcon from '@mui/icons-material/Add';
 import LinearProgress from "@mui/material/LinearProgress";
 import { useParams } from "react-router-dom";
 import { addStructure } from "../../../../api"
+import { Divider } from "@mui/material";
+import { Container } from "@mui/material";
+
 export default function FormDialog({ data, set }) {
   const params = useParams();
   const [open, setOpen] = React.useState(false);
@@ -58,12 +61,34 @@ export default function FormDialog({ data, set }) {
   };
   return (
     <div>
-      <div>
-        <Button sx={{ "right": "10px" }} variant="contained" endIcon={<AddIcon />} onClick={handleClickOpen}>
-          ADD
-        </Button>
-      </div>
+      <Container
+          sx={{ width: "71%", marginTop: "5px", marginBottom: "10px" }}
+        >
+          <Button
+            onClick={handleClickOpen}
+            sx={{
+              borderRadius: 5,
+              color: "white",
+              textTransform: "none",
+              background: "#3C403D",
+              "&:hover": {
+                background: "#3C403D",
+              },
+              marginBottom: 1,
+              marginTop: 3,
+            }}
+            variant="outlined"
+            startIcon={<AddIcon />}
+          >
+            Create
+          </Button>
+          <Divider sx={{ marginY: "10px", background: "black" }} />
+        </Container>
       <Dialog open={open} onClose={handleClose}>
+      {loading && (
+        <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
+      )}
+
         <DialogTitle>New Grade Structure</DialogTitle>
         <DialogContent>
           <DialogContentText>
