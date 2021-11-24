@@ -5,13 +5,13 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-export default function ControlledAccordions({data}) {
+export default function ControlledAccordions({data, homework}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  console.log(homework)
   return (
     <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
@@ -20,15 +20,14 @@ export default function ControlledAccordions({data}) {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography sx={{ width: '33%', flexShrink: 0 }}>
+          <Typography variant="subtitle1" sx={{ width: '33%', flexShrink: 0 }}>
             {data.description}
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>{data.grade}</Typography>
-        </AccordionSummary>
+          <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>{data.grade}</Typography>
+        </AccordionSummary >
         <AccordionDetails>
-          <Typography>   BTVN-01 </Typography>
-          <Typography>   BTVN-02 </Typography>
-          <Typography>   BTVN-03 </Typography>
+          {homework.filter(element=>element.idgradestructure===data.id).map((value,index)=><Typography variant="caption">{value.name}</Typography>)}
+       
           
         </AccordionDetails>
       </Accordion>

@@ -122,24 +122,7 @@ export const getGrade = async () => {
 
   return data;
 };
-export const getGradeStructure = async (id) => {
-  let data = null;
-  await axios
 
-    .get(`${URL}/GradeStructure/GetStructure/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then((res) => {
-      data = res.data;
-    })
-    .catch((error) => {
-      data = error.response.data;
-    });
-
-  return data;
-};
 //get HomeWork
 export const getHomeWorks= async (id) => {
   let data = null;

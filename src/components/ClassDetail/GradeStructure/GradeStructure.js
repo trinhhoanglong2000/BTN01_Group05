@@ -7,7 +7,7 @@ import { useParams, Navigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import { arrayMove } from "react-sortable-hoc";
-import { getGradeStructure } from '../../../api'
+import { getGradeStructure,getHomeWorks } from '../../../api'
 export const GradeStructure = () => {
 
 
@@ -15,7 +15,7 @@ export const GradeStructure = () => {
     const [auth, setAuth] = useState(true);
     const [loading, setLoading] = useState(false);
     const [structure, setStructure] = useState([]);
-
+    const [structureHW, setStructureHW] = useState([]);
     useEffect(() => {
         GetStructure();
         return () => {
@@ -26,13 +26,17 @@ export const GradeStructure = () => {
     const GetStructure = async () => {
         setLoading(true);
         let data = {};
-        
+        let homeworks={};
         try {
             data = await getGradeStructure(params.id)
+            homeworks = await getHomeWorks(params.id)
+            
         } catch (error) {
             console.log(error);
         }
         if (data.success) {
+
+            await setStructureHW(homeworks.data)
             await setStructure(data.data)
         } else {
             if (data.message === "jwt expired") localStorage.clear();
@@ -54,7 +58,7 @@ export const GradeStructure = () => {
             
             {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
             <Dialog data = {structure} set = {setStructure}/>
-            <DataList data={structure} onSortEnd={onSortEnd} pressDelay={200} />
+            <DataList data={structure} homework = {structureHW} onSortEnd={onSortEnd} pressDelay={200} />
 
            
         </div>
