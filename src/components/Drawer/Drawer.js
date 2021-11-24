@@ -129,7 +129,7 @@ export default function SwipeableTemporaryDrawer() {
               className={classes.icon}
               edge="start"
               aria-label="menu"
-              sx={{ m: 0, p: 0 }}
+              sx={{ m: 0, p: 0 ,color:'black!important'}}
             >
               <MenuIcon />
             </IconButton>

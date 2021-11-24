@@ -25,7 +25,6 @@ import { default as ManageAccount } from "./Dialog/ManageAccount";
 import ColorToggleButton from "./ToggleButton/ToggleButton";
 export default function Header() {
   const params = useParams();
-  console.log(params.id);
 
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
@@ -75,27 +74,45 @@ export default function Header() {
         <AppBar
           position="static"
           sx={{
-            background: "#39603D",
+            background: "#9DC183",
           }}
         >
           <Toolbar sx={{ paddingLeft: "0 !important", position: "relative" }}>
-            <Toolbar sx={{ position: "absolute;", top: "0px;", left: "0px;" }}>
+            <Toolbar sx={{ position: "absolute;", top: "0px;", left: "0px;",height:'100%' }}>
               <Drawer />
 
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ flexGrow: 1, color: "#FFFFFF" }}
+                sx={{ flexGrow: 1, color: "black" }}
               >
                 Classroom
               </Typography>
             </Toolbar>
-            {params.id !== undefined && <ColorToggleButton sx={{margin:'0px auto;'}}/>}
+            {params.id !== undefined && (
+              <ColorToggleButton
+                sx={{
+                  margin: "0px auto;",
+                  "@media (max-width: 670px)": {
+                    alignItems: 'flex-end',
+                    height:'150px'
+                  
+                  },
+                }}
+              />
+            )}
 
             <IconButton
               onClick={handleClick}
               size="small"
-              sx={{ ml: 2,mr:2, position: "absolute", top: "0px;", right: "0px;" ,height:'100%'}}
+              sx={{
+                ml: 2,
+                mr: 2,
+                position: "absolute",
+                top: "0px;",
+                right: "0px;",
+                height: "100%",
+              }}
             >
               <Avatar
                 sx={{
