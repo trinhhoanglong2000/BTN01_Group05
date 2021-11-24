@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 
-export default function Topics() {
+export default function Topics({gradeStruc,input,setInput}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -13,14 +13,10 @@ export default function Topics() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const styles = (theme) => ({
-    popoverPaper: {
-      width: "100%",
-      height: "100%",
-      maxHeight: "unset",
-      maxWidth: "unset",
-    },
-  });
+  const handleMenuItemClick = (event, index) => {
+    setInput({ ...input, gradeStruct: gradeStruc[index].id });
+    setAnchorEl(null);
+  };
   return (
     <div>
       <Button
@@ -31,7 +27,7 @@ export default function Topics() {
         onClick={handleClick}
         sx={{ width: "100%" ,color:'black'}}
       >
-        No topics
+        {input.gradeStruct ? gradeStruc.filter(word =>{return word.id===input.gradeStruct})[0].description:"No topics"}
       </Button>
       <Menu
         PaperProps={{
@@ -51,8 +47,8 @@ export default function Topics() {
         <MenuItem onClick={handleClose}>
           Create topic
         </MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        {gradeStruc.map((value,index)=> <MenuItem name={index}  onClick={(event) => handleMenuItemClick(event, index)} key={index}>{value.description}</MenuItem>)}
+
       </Menu>
     </div>
   );

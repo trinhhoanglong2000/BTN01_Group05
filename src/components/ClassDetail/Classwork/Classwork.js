@@ -4,69 +4,113 @@ import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import { useParams, Navigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
-import { getAllAccountFromClass } from "../../../api";
 import Grid from "@mui/material/Grid";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Divider } from "@mui/material";
 import CreateAssignment from "./Dialog/CreateAssignment";
 
-import ListSubheader from "@mui/material/ListSubheader";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-
+import { getGradeStructure, getHomeWorks, CheckTeacher,RemoveHomeWork } from "../../../api";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import Toolbar from "@mui/material/Toolbar";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import IconButton from "@mui/material/IconButton";
+import UpdateIcon from "@mui/icons-material/Update";
+import DeleteIcon from "@mui/icons-material/Delete";
 export const Classwork = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [classes, setClasses] = useState({});
   const [topic, setTopic] = useState(["All Topics"]);
+  const [Update,setUpdate] = useState(false)
+  const [gradeStuct, setGradeStruct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alignment, setAlignment] = React.useState("ios");
-  const [homework, setHomeWork] = useState([
-    
-  ]);
+  const [homework, setHomeWork] = useState([]);
   const [count, setCount] = useState(0);
+  const [teacher, setTeacher] = useState(false);
+
+  //dropdown menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setCount(event.currentTarget.value);
+
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const handleChange = (event, newAlignment) => {
     setAlignment(newAlignment);
   };
   const handleCreateAssignment = () => {
     setCount(homework.length);
+    setUpdate(false)
+
     setOpenDialog(true);
   };
+  const update = (event) => {
+    setAnchorEl(null);
+    setUpdate(true)
+    setOpenDialog(true);
 
-  const handleSubmit = () => {};
+  };
+  const Delete = async (event) => {
+    
+    
+    let result = {};
+    try {
+      result= await RemoveHomeWork({id:homework[count].id})
+    } catch (error) {
+
+    }
+    if (result.success) {
+      const Clone = homework.slice();
+      const newValue = Clone.filter((ele)=>ele.id!==homework[count].id)
+      setHomeWork(newValue)
+    } else {
+      
+    }
+
+    setAnchorEl(null);
+  };
+
   useEffect(() => {
-    GetAllClass();
+    GetData();
     return () => {
       setAuth(false);
-      setClasses({});
       setLoading(false);
     };
   }, []);
-  const GetAllClass = async () => {
+  const GetData = async () => {
     setLoading(true);
     let data = {};
-
+    let hw = {};
+    let teach = {};
     try {
-      data = await getAllAccountFromClass(params.id);
+      data = await getGradeStructure(params.id);
+      hw = await getHomeWorks(params.id);
+      teach = await CheckTeacher(params.id);
     } catch (error) {
       console.log(error);
     }
     if (data.success) {
-      const teacher = data.data.filter((word) => word.type === true);
-
-      const student = data.data.filter((word) => word.type === false);
-      await setClasses({ teacher: teacher, student: student });
+      setGradeStruct(data.data);
+      setHomeWork(hw.data);
+      setTeacher(teach.data[0].type);
     } else {
       if (data.message === "jwt expired") localStorage.clear();
       setAuth(false);
     }
     setLoading(false);
   };
-
   return (
     <div>
       {!auth && <Navigate to="/login" />}
@@ -77,6 +121,8 @@ export const Classwork = () => {
           value={homework}
           setValue={setHomeWork}
           current={count}
+          gradeStruc={gradeStuct}
+          update={Update}
         />
       )}
 
@@ -85,12 +131,6 @@ export const Classwork = () => {
       )}
 
       <Container sx={{ width: "80vw" }}>
-        {/* <Container>
-          <Typography variant="h4">Assignment</Typography>
-
-          <Accordion />
-        </Container> */}
-
         <Container
           sx={{ width: "71%", marginTop: "5px", marginBottom: "10px" }}
         >
@@ -107,6 +147,7 @@ export const Classwork = () => {
               marginBottom: 1,
               marginTop: 3,
             }}
+            disabled={!teacher}
             variant="outlined"
             startIcon={<AddIcon />}
           >
@@ -125,7 +166,7 @@ export const Classwork = () => {
             >
               {topic.map((item, key) => {
                 return (
-                  <ToggleButton
+                  <ToggleButton key={key}
                     value=""
                     sx={{ color: "black", border: "none", fontSize: "0.7rem" }}
                   >
@@ -137,19 +178,65 @@ export const Classwork = () => {
           </Grid>
           <Grid item xs={8}>
             <Container sx={{ padding: "0px!important" }}>
-              <List
-                sx={{
-                  width: "100%",
-                  padding: "0px",
-                  backgroundColor: " transparent",
-                }}
-                aria-labelledby="nested-list-subheader"
-                subheader={
-                  <ListSubheader sx={{ backgroundColor: " transparent" }}>
-                    Nested List Items
-                  </ListSubheader>
-                }
-              ></List>
+              {homework.map((value, index) => (
+                <Toolbar
+                  sx={{ padding: "0px!important", width: "100%" }}
+                  key={index}
+                >
+                  <Accordion
+                    sx={{ background: "rgba(255,255,255,0.3)", width: "100%" }}
+                  >
+                    <AccordionSummary
+                      sx={{ color: "black", opacity: "1!important" }}
+                      aria-controls="panel1a-content"
+                    >
+                      <Typography variant="subtitle1">{value.name}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography variant="caption">
+                        {value.description}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                  {/*  */}
+                  <IconButton
+                    aria-label="more"
+                    aria-controls="long-menu"
+                    aria-expanded={open ? "true" : undefined}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    value={index}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    PaperProps={{
+                      style: {
+                        maxHeight: 48 * 4.5,
+                        width: "15ch",
+                      },
+                    }}
+                  >
+                    <MenuItem
+                      data-my-value={index}
+                      onClick={(event) => update(event)}
+                    >
+                      <UpdateIcon />
+                      Update
+                    </MenuItem>
+                    <MenuItem
+                      data-my-value={index}
+                      onClick={(event) => Delete(event)}
+                    >
+                      <DeleteIcon />
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </Toolbar>
+              ))}
             </Container>
           </Grid>
           <Grid item xs={2}>

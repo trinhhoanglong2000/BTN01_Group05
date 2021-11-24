@@ -122,7 +122,98 @@ export const getGrade = async () => {
 
   return data;
 };
+export const getGradeStructure = async (id) => {
+  let data = null;
+  await axios
 
+    .get(`${URL}/GradeStructure/GetStructure/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+//get HomeWork
+export const getHomeWorks= async (id) => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/HomeWork/GetHomeWorkByClassID?classid=${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+//create HomeWork
+export const createHomeWork = async (data) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/HomeWork/AddHomeWork`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const UpdateHomeWork = async (data) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/HomeWork/UpdateHomeWork`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const RemoveHomeWork = async (data) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/HomeWork/RemoveHomeWork`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
 
 // Class Account API ---------------------------------------------------------------------
 export const getAllAccountFromClass = async (id) => {

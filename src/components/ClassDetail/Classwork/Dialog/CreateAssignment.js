@@ -20,9 +20,10 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import Topics from "../Dropdown/Topics";
-import moment from 'moment';
-
-import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import LinearProgress from "@mui/material/LinearProgress";
+import { createHomeWork, UpdateHomeWork } from "../../../../api";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,8 +35,10 @@ export default function CreateAssignment({
   value,
   setValue,
   current,
-  setCurrent,
+  gradeStruc,
+  update,
 }) {
+  const params = useParams();
   var today = new Date();
   var date =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
@@ -51,30 +54,78 @@ export default function CreateAssignment({
     description: null,
     grade: "100",
     due: dateTime,
+    gradeStruct: null,
   });
   useEffect(() => {
     if (value[current] !== undefined) {
       const copy = value.slice();
+
       setInput((input) => ({
         ...input,
-        title: copy[current].title,
+        title: copy[current].name,
         description: copy[current].description,
         grade: copy[current].grade,
-        due: copy[current].due,
+        due: copy[current].endday,
+        gradeStruct: copy[current].idgradestructure,
       }));
     }
   }, []);
-
   const handleClose = () => {
     setOpen(false);
   };
   const handleChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const handlesubmit = () => {
-    const dueTime = (moment(input.due, 'dd/MM/yyyy hh:mm:ssa').format('YYYY/MM/DD HH:mm:ss'))
-    console.log(dueTime);
+  const handlesubmit = async () => {
+    setLoading(true);
+    const dueTime = moment(input.due, "dd/MM/yyyy hh:mm:ssa").format(
+      "YYYY/MM/DD HH:mm:ss"
+    );
+    const cpy = {
+      idclass: params.id,
+      name: input.title,
+      description: input.description,
+      grade: input.grade,
+      endday: input.due,
+      idgradestructure: input.gradeStruct,
+    };
 
+    let result = {};
+    try {
+      if (update) {
+        result = await UpdateHomeWork({ ...cpy, id: value[current].id });
+      } else {
+        result = await createHomeWork(cpy);
+      }
+    } catch (error) {}
+    if (result.success) {
+      if (update) {
+        const newValue = {
+          ...cpy,
+          startday: value[current].startday,
+          id: value[current].id,
+        };
+        const Clone = value.slice();
+        Clone[current] = newValue;
+        setValue(Clone);
+      } else {
+        setValue(
+          value.concat([{ ...cpy, startday: new Date(), id: result.data.id }])
+        );
+      }
+
+      setErr(false);
+      setOpen(false);
+    } else {
+      alert(result.message);
+      if (result.message === "Time error") {
+        //Due day must greater than current
+        setErr(true);
+        setErrmessage("Due Time must greater than current time");
+      }
+    }
+
+    setLoading(false);
   };
   return (
     <div>
@@ -117,6 +168,8 @@ export default function CreateAssignment({
             </Button>
           </Toolbar>
         </AppBar>
+        {loading && <LinearProgress />}
+
         <Grid
           container
           justifyContent="center"
@@ -218,8 +271,7 @@ export default function CreateAssignment({
                     onChange={(newValue) => {
                       setInput({ ...input, due: newValue });
                     }}
-                    inputFormat	='dd/MM/yyyy hh:mm:ssa'
-
+                    inputFormat="dd/MM/yyyy hh:mm:ssa"
                     renderInput={({ inputRef, inputProps, InputProps }) => (
                       <TextField
                         inputProps={inputProps}
@@ -235,9 +287,12 @@ export default function CreateAssignment({
                 <Typography sx={{ marginBottom: "15px", marginTop: "30px" }}>
                   Topic
                 </Typography>
-                <Topics/>
+                <Topics
+                  gradeStruc={gradeStruc}
+                  input={input}
+                  setInput={setInput}
+                />
               </Box>
-              
             </Container>
           </Grid>
         </Grid>
