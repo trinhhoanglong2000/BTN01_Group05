@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-
 import List from "./List/List";
 import { Container } from "@mui/material";
 
@@ -42,6 +41,7 @@ export const People = () => {
     }
     setLoading(false);
   };
+  
   return (
     <div>
       {!auth && <Navigate to="/login" />}
