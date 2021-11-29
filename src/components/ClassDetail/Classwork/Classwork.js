@@ -23,6 +23,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
+import * as TemplateXML from "../../../FileTemplate"
 export const Classwork = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
@@ -65,7 +66,8 @@ export const Classwork = () => {
 
   };
   const upload = (event) =>{
-    
+    document.getElementById("upload").click()
+    document.getElementById("upload").value = "";
   }
   const Delete = async (event) => {
     
@@ -118,6 +120,7 @@ export const Classwork = () => {
   };
   return (
     <div>
+      
       {!auth && <Navigate to="/login" />}
       {openDialog && (
         <CreateAssignment
@@ -139,6 +142,15 @@ export const Classwork = () => {
         <Container
           sx={{ width: "71%", marginTop: "5px", marginBottom: "10px" }}
         >
+          <input
+        class = "displayNone"
+        id = "upload"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          TemplateXML.readExcel(file);
+        }}
+      />
           <Button
             onClick={handleCreateAssignment}
             sx={{
@@ -227,7 +239,7 @@ export const Classwork = () => {
                   >
                     <MenuItem
                       data-my-value={index}
-                      onClick={(event) => update(event)}
+                      onClick={(event) => upload()}
                     >
                       <UploadFileIcon />
                       Upload

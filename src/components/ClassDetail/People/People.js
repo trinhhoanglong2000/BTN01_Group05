@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import XLSX from "xlsx";
 import List from "./List/List";
 import { Container } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,6 +9,9 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { getAllAccountFromClass } from "../../../api";
 import Button from "@mui/material/Button";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { display } from "@mui/system";
+import * as TemplateXML from "../../../FileTemplate"
+
 export const People = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
@@ -22,6 +25,9 @@ export const People = () => {
         setLoading(false)
     };
   }, []);
+  const uploadClick = () =>{
+    document.getElementById("upload").click()
+  }
   const GetAllClass = async () => {
     setLoading(true);
     let data = {};
@@ -52,8 +58,18 @@ export const People = () => {
      
       <Container sx={{ width: "80vw" }}>
         <Container>
+       
+      <input
+        class = "displayNone"
+        id = "upload"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          TemplateXML.readExcel(file);
+        }}
+      />
         <Button
-           
+           onClick = {uploadClick}
             sx={{
               borderRadius: 5,
               color: "white",
