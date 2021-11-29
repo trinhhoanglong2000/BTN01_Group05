@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import List from "./List/List";
 import { Container } from "@mui/material";
-
+import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { useParams, Navigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import { getAllAccountFromClass } from "../../../api";
-
+import Button from "@mui/material/Button";
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 export const People = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
@@ -51,6 +52,24 @@ export const People = () => {
      
       <Container sx={{ width: "80vw" }}>
         <Container>
+        <Button
+           
+            sx={{
+              borderRadius: 5,
+              color: "white",
+              textTransform: "none",
+              background: "#3C403D",
+              "&:hover": {
+                background: "#3C403D",
+              },
+              marginBottom: 1,
+              marginTop: 3,
+            }}
+            variant="outlined"
+            startIcon={<UploadFileIcon/>}
+          >
+            Upload File 
+          </Button>
           <Typography variant="h4">Teacher</Typography>
 
           <List data={classes.teacher} />

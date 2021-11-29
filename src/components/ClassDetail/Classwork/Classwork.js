@@ -14,6 +14,7 @@ import { getGradeStructure, getHomeWorks, CheckTeacher,RemoveHomeWork } from "..
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Accordion from "@mui/material/Accordion";
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
@@ -28,6 +29,7 @@ export const Classwork = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [topic, setTopic] = useState(["All Topics"]);
   const [Update,setUpdate] = useState(false)
+  const [Upload,setUpload] = useState(false) 
   const [gradeStuct, setGradeStruct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alignment, setAlignment] = React.useState("ios");
@@ -62,6 +64,9 @@ export const Classwork = () => {
     setOpenDialog(true);
 
   };
+  const upload = (event) =>{
+    
+  }
   const Delete = async (event) => {
     
     
@@ -220,6 +225,13 @@ export const Classwork = () => {
                       },
                     }}
                   >
+                    <MenuItem
+                      data-my-value={index}
+                      onClick={(event) => update(event)}
+                    >
+                      <UploadFileIcon />
+                      Upload
+                    </MenuItem>
                     <MenuItem
                       data-my-value={index}
                       onClick={(event) => update(event)}
