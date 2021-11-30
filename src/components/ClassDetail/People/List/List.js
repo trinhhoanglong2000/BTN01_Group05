@@ -7,7 +7,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import FolderIcon from '@mui/icons-material/Folder';
 
-export default function AlignItemsList({ data }) {
+export default function AlignItemsList({ data,type }) {
   
   return (
     <>
@@ -23,9 +23,8 @@ export default function AlignItemsList({ data }) {
                   <FolderIcon />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText
-                primary={item.username}
-              />
+             {type && <ListItemText primary={item.student_id} />}
+             {!type && <ListItemText primary={item.StudentID} />}
             </ListItem>
             <Divider sx={{width:'100%'}} />
 

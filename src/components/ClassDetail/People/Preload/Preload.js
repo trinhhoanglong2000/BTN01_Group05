@@ -3,47 +3,45 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import Typography from "@mui/material/Typography";
 import DialogTitle from '@mui/material/DialogTitle';
+import { Container, Divider } from "@mui/material";
+import List from "../List/List"
+export default function AlertDialog({ newData, setDialog, student }) {
+    const [open, setOpen] = React.useState(true);
 
-export default function AlertDialog() {
-  const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+        setDialog(false);
+    };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+    return (
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+        <div>
+            {console.log(newData)}
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"New Student List!"}
+                </DialogTitle>
+                <DialogContent>
+                    <Container>
+                        <Typography variant="h4">Student</Typography>
+                        <List data={student} type = {true} />
+                        <List data ={newData} type = {false}/>
+                    </Container>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleClose} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
 }

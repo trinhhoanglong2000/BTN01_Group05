@@ -38,7 +38,7 @@ function s2ab(s) {
 }
 
 //Export File
-export default function File({student}) {
+export default function File() {
     const uploadClick = () => {
         document.getElementById("upload").click()
     }
