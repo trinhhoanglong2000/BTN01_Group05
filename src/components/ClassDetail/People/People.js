@@ -48,6 +48,9 @@ export const People = () => {
     }
     setLoading(false);
   };
+  const getData = () => {
+    
+  }
 
   return (
     <div>
@@ -57,22 +60,25 @@ export const People = () => {
       {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
 
       <Container sx={{ width: "80vw" }}>
+        <input
+          class="displayNone"
+          id="upload"
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            
+            TemplateXML.readExcel(file).then((d) => {
+
+              console.log(d)
+            
+            });;
+
+          }}
+        />
+        {teacher && <File student={classes.student} />}
+        {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
         <Container>
-
-          <input
-            class="displayNone"
-            id="upload"
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              TemplateXML.readExcel(file);
-            }}
-          />
-          {teacher && <File />}
-          {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
-          
           <Typography variant="h4">Teacher</Typography>
-
           <List data={classes.teacher} />
         </Container>
 
