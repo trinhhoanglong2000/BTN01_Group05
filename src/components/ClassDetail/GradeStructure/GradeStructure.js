@@ -58,7 +58,7 @@ export const GradeStructure = () => {
             
             {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
             <Dialog data = {structure} set = {setStructure}/>
-            <DataList data={structure} homework = {structureHW} onSortEnd={onSortEnd} pressDelay={200} />
+            <DataList data={structure} homework = {structureHW} onSortEnd={onSortEnd}  useDragHandle={true}/>
 
            
         </div>

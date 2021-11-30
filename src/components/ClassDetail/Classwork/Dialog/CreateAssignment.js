@@ -117,6 +117,10 @@ export default function CreateAssignment({
       setErr(false);
       setOpen(false);
     } else {
+      if (result==="Unauthorized"){
+        localStorage.clear();
+        navigate('/login')
+      }
       alert(result.message);
       if (result.message === "Time error") {
         //Due day must greater than current
