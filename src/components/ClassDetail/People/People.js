@@ -72,7 +72,8 @@ export const People = () => {
         <Preload newData={newData}
           setDialog={setDialog}
           student={classes.student}
-          setNewData = {setNewData} />}
+          setNewData = {setNewData} 
+          classId = {params.id}/>}
 
       {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
 
@@ -84,6 +85,8 @@ export const People = () => {
           onChange={(e) => {
             const file = e.target.files[0];
             getData(file);
+          
+            e.target.value = ""
           }}
         />
         {teacher && <File />}

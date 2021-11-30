@@ -6,8 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from "@mui/material/Typography";
 import DialogTitle from '@mui/material/DialogTitle';
 import { Container, Divider } from "@mui/material";
+import * as api from "../../../../api"
 import List from "../List/List"
-export default function AlertDialog({ newData, setDialog, student, setNewData }) {
+export default function AlertDialog({ newData, setDialog, student, classId,setNewData }) {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = () => {
@@ -22,9 +23,16 @@ export default function AlertDialog({ newData, setDialog, student, setNewData })
 
         setNewData(filterData)
     }
+    const handleAgree = async () => {
+        var data = await api.postListStudent(newData,classId )
+        console.log(data)
+        setOpen(false);
+        setDialog(false);
+    }
     return (
 
         <div>
+           
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -38,13 +46,14 @@ export default function AlertDialog({ newData, setDialog, student, setNewData })
                 <DialogContent>
                     <Container>
                         <Typography variant="h4">Student</Typography>
-                        <List data={student} type={true} />
-                        <List data={newData} type={false} />
+                        <List data={student} type = {true} />
+                        <List data ={newData} type = {false}/>
+                        
                     </Container>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Disagree</Button>
-                    <Button onClick={handleClose} autoFocus>
+                    <Button onClick={handleAgree} autoFocus>
                         Agree
                     </Button>
                 </DialogActions>
