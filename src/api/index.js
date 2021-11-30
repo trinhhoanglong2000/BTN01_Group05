@@ -354,3 +354,29 @@ export const postListStudent = async (
   if (message != null) return message;
   return test.data;
 };
+export const postHomeWordGrade = async (
+  homeworkData,
+  classId,
+  homeworkId
+) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/UploadScore`,
+      {
+        homeworkData: homeworkData,
+        classId: classId,
+        homeworkId:homeworkId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};

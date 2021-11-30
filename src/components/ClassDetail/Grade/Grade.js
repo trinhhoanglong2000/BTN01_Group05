@@ -26,6 +26,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 import * as TemplateXML from "../../../FileTemplate";
+import * as api from "../../../api"
 var FileSaver = require('file-saver');
 const rows = [
   {
@@ -87,9 +88,14 @@ export const Grade = () => {
   }, []);
 
   const getData = async (file) => {
-    let promiseData = await TemplateXML.readExcel(file)
-    console.log(homework[count]);
-    console.log(promiseData)
+    let homeWorkData = await TemplateXML.readExcel(file)
+    var classId = homework[count].idclass
+    var homeworkId = homework[count].id
+    console.log(homeWorkData)
+    console.log(classId)
+    console.log(homeworkId)
+    var data = await api.postHomeWordGrade(homeWorkData,classId,homeworkId)
+    console.log(data)
   }
   const GetGrade = async () => {
     setLoading(true);
@@ -129,7 +135,7 @@ export const Grade = () => {
     setLoading(false);
   };
   const upload = () =>{
-    //coi thu console log la thay dc du lieu cua homework dc chon
+  
     document.getElementById("upload").click()
     document.getElementById("upload").value=""
    
