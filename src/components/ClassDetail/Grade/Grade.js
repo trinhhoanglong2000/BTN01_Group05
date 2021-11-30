@@ -25,7 +25,8 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
-
+import * as TemplateXML from "../../../FileTemplate";
+var FileSaver = require('file-saver');
 const rows = [
   {
     name: "Ice cream sandwich",
@@ -84,6 +85,12 @@ export const Grade = () => {
       setLoading(false);
     };
   }, []);
+
+  const getData = async (file) => {
+    let promiseData = await TemplateXML.readExcel(file)
+    console.log(homework[count]);
+    console.log(promiseData)
+  }
   const GetGrade = async () => {
     setLoading(true);
 
@@ -123,11 +130,12 @@ export const Grade = () => {
   };
   const upload = () =>{
     //coi thu console log la thay dc du lieu cua homework dc chon
-    console.log(homework[count]);
+    document.getElementById("upload").click()
+    document.getElementById("upload").value=""
+   
   }
   const download = ()=>{
-    console.log(homework[count]);
-
+    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGradeTemplate.xlsx')
   }
   return (
     <div>
@@ -137,6 +145,16 @@ export const Grade = () => {
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
       <StructureButton />
+      <input
+          class="displayNone"
+          id="upload"
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            getData(file);
+            e.target.value = ""
+          }}
+        />
       <TableContainer>
         <Table
           sx={{

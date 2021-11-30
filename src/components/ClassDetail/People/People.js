@@ -55,6 +55,8 @@ export const People = () => {
     
     promiseData = promiseData.filter(item => item.StudentID != undefined)
     
+    console.log(promiseData)
+  
     //
     let dataTemp = classes.student
     dataTemp = dataTemp.map(item => { return item.student_id })
