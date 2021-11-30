@@ -19,11 +19,12 @@ import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
 
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
+import TextField from "@mui/material/TextField";
 
 const rows = [
   {
@@ -66,13 +67,12 @@ export const Grade = () => {
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [grades,setGrades] = useState([]);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-  
     setOpenUpdate(false);
 
     setAnchorEl(null);
@@ -86,6 +86,7 @@ export const Grade = () => {
   }, []);
   const GetGrade = async () => {
     setLoading(true);
+
     let data = {};
     let hw = {};
     let teach = {};
@@ -104,13 +105,30 @@ export const Grade = () => {
       setTeacher(teach.data[0].type);
 
       await setStudent(student);
+
+      //set Up grades
+      let arr =[]
+      student.forEach((element) => {
+        let tmp = [];
+        hw.data.forEach((value)=>{
+          tmp.push(null);
+        })
+        arr.push(tmp);
+      });
     } else {
       if (data.message === "jwt expired") localStorage.clear();
       setAuth(false);
     }
     setLoading(false);
   };
+  const upload = () =>{
+    //coi thu console log la thay dc du lieu cua homework dc chon
+    console.log(homework[count]);
+  }
+  const download = ()=>{
+    console.log(homework[count]);
 
+  }
   return (
     <div>
       {!auth && <Navigate to="/login" />}
@@ -156,12 +174,10 @@ export const Grade = () => {
                   onMouseOver={() => {
                     setCount(index);
                     setOpenUpdate(true);
-                    
                   }}
                   onMouseLeave={() => {
                     setOpenUpdate(false);
                     setAnchorEl(false);
-
                   }}
                   sx={{
                     width: "120px",
@@ -214,17 +230,16 @@ export const Grade = () => {
                         >
                           <MenuItem
                             data-my-value={index}
-                            //onClick={(event) => update(event)}
+                            onClick={upload}
                           >
                             <FileUploadIcon />
                             Upload
                           </MenuItem>
                           <MenuItem
                             data-my-value={index}
-                            //onClick={(event) => Delete(event)}
+                            onClick={download}
                           >
-                             <FileDownloadIcon />
-                            
+                            <FileDownloadIcon />
                             Download
                           </MenuItem>
                         </Menu>
@@ -283,7 +298,12 @@ export const Grade = () => {
                     }}
                     align="left"
                   >
-                    {"null"}
+                    <TextField
+                      variant="standard"
+                      defaultValue={"Null"}
+                      InputProps={{ disableUnderline: true }}
+
+                    />
                   </TableCell>
                 ))}
                 <TableCell
