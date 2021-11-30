@@ -70,8 +70,6 @@ export default function BasicSpeedDial() {
   const actions = [
     { icon: <EmailIcon />, name: "Mail invitation" ,onClick: getMailInvite},
     { icon: <LinkIcon />, name: "Get link invitation" ,onClick: getLinkInvite},
-    { icon: <FileDownloadIcon />, name: "Download Student List Template", onClick:downloadStudentListTemplate },
-    { icon: <FileDownloadIcon />, name: "Download Student Grade Template", onClick:downloadStudentGradeTemplate }
   ];
 
 

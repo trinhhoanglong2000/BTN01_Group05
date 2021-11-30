@@ -237,13 +237,7 @@ export const Classwork = () => {
                       },
                     }}
                   >
-                    <MenuItem
-                      data-my-value={index}
-                      onClick={(event) => upload()}
-                    >
-                      <UploadFileIcon />
-                      Upload
-                    </MenuItem>
+                    
                     <MenuItem
                       data-my-value={index}
                       onClick={(event) => update(event)}
