@@ -8,26 +8,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Container, Divider } from "@mui/material";
 import * as api from "../../../../api"
 import List from "../List/List"
-export default function AlertDialog({ newData, setDialog, student, classId,setNewData }) {
+export default function AlertDialog({ newData, setDialog, student, classId}) {
     const [open, setOpen] = React.useState(true);
-
     const handleClose = () => {
         setOpen(false);
         setDialog(false);
     };
-    const SetNewArr = () => {
-        let dataTemp1 = student
-        dataTemp1 = dataTemp1.map(item => { return item.student_id })
-        let filterData = newData
-        filterData = filterData.filter(item => !dataTemp1.includes(item.StudentID.toString()))
-
-        setNewData(filterData)
-    }
+    
     const handleAgree = async () => {
         var data = await api.postListStudent(newData,classId )
         console.log(data)
+        
         setOpen(false);
         setDialog(false);
+        
     }
     return (
 

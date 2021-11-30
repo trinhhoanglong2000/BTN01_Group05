@@ -14,6 +14,7 @@ import MailInvite from "../../InvitePeople/MailInvite";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import XLSX from "xlsx";
 import * as TemplateXML from "../../../../FileTemplate"
+
 var FileSaver = require('file-saver');
 const useStyles = makeStyles((theme) => ({
   pos: {
@@ -60,9 +61,6 @@ export default function BasicSpeedDial() {
   }
   const closeLinkInvite = () =>{
     setLinkInviteDialog(false)
-  }
-  const downloadStudentListTemplate = () => {
-    FileSaver.saveAs(TemplateXML.StudentListTemplate(), 'StudentListTemplate.xlsx')
   }
   const downloadStudentGradeTemplate = () => {
     FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGrade.xlsx')
