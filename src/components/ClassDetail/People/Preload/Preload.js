@@ -7,23 +7,30 @@ import Typography from "@mui/material/Typography";
 import DialogTitle from '@mui/material/DialogTitle';
 import { Container, Divider } from "@mui/material";
 import List from "../List/List"
-export default function AlertDialog({ newData, setDialog, student }) {
+export default function AlertDialog({ newData, setDialog, student, setNewData }) {
     const [open, setOpen] = React.useState(true);
 
     const handleClose = () => {
         setOpen(false);
         setDialog(false);
     };
+    const SetNewArr = () => {
+        let dataTemp1 = student
+        dataTemp1 = dataTemp1.map(item => { return item.student_id })
+        let filterData = newData
+        filterData = filterData.filter(item => !dataTemp1.includes(item.StudentID.toString()))
 
+        setNewData(filterData)
+    }
     return (
 
         <div>
-            {console.log(newData)}
             <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                PaperProps={{ style: { width: '1000px' } }}
             >
                 <DialogTitle id="alert-dialog-title">
                     {"New Student List!"}
@@ -31,8 +38,8 @@ export default function AlertDialog({ newData, setDialog, student }) {
                 <DialogContent>
                     <Container>
                         <Typography variant="h4">Student</Typography>
-                        <List data={student} type = {true} />
-                        <List data ={newData} type = {false}/>
+                        <List data={student} type={true} />
+                        <List data={newData} type={false} />
                     </Container>
                 </DialogContent>
                 <DialogActions>

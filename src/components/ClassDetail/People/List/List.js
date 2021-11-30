@@ -24,7 +24,9 @@ export default function AlignItemsList({ data,type }) {
                 </Avatar>
               </ListItemAvatar>
              {type && <ListItemText primary={item.student_id} />}
+             {type && <ListItemText primary={item.firstname + " " +item.lastname} />}
              {!type && <ListItemText primary={item.StudentID} />}
+             {!type && <ListItemText sx={{ marginLeft: "100" }} primary={item.Name} />}
             </ListItem>
             <Divider sx={{width:'100%'}} />
 

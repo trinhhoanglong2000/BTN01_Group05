@@ -52,7 +52,15 @@ export const People = () => {
   };
   const getData = async (file) => {
     let promiseData = await TemplateXML.readExcel(file)
-
+    
+    //
+    let dataTemp = classes.student
+    dataTemp = dataTemp.map(item => { return item.student_id })
+    promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
+    
+    dataTemp = classes.teacher
+    dataTemp = dataTemp.map(item => { return item.student_id })
+    promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
     setNewData(promiseData)
     setDialog(true)
   }
@@ -63,7 +71,8 @@ export const People = () => {
       {Dialog &&
         <Preload newData={newData}
           setDialog={setDialog}
-          student={classes.student} />}
+          student={classes.student}
+          setNewData = {setNewData} />}
 
       {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
 
