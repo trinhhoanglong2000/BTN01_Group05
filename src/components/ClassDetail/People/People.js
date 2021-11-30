@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { useParams, Navigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import { getAllAccountFromClass, CheckTeacher } from "../../../api";
-
+import Preload from "./Preload/Preload"
 
 import * as TemplateXML from "../../../FileTemplate"
 import File from "./File/File"
@@ -16,6 +16,8 @@ export const People = () => {
   const [classes, setClasses] = useState({});
   const [loading, setLoading] = useState(false);
   const [teacher, setTeacher] = useState(false);
+  const [newData, setNewData] = useState([]);
+  const [Dialog, setDialog] = useState(false);
   useEffect(() => {
     GetAllClass();
     return () => {
@@ -48,37 +50,55 @@ export const People = () => {
     }
     setLoading(false);
   };
+  const getData = async (file) => {
+    let promiseData = await TemplateXML.readExcel(file)
+    
+    //
+    let dataTemp = classes.student
+    dataTemp = dataTemp.map(item => { return item.student_id })
+    promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
+    
+    dataTemp = classes.teacher
+    dataTemp = dataTemp.map(item => { return item.student_id })
+    promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
+    setNewData(promiseData)
+    setDialog(true)
+  }
 
   return (
     <div>
       {!auth && <Navigate to="/login" />}
-
+      {Dialog &&
+        <Preload newData={newData}
+          setDialog={setDialog}
+          student={classes.student}
+          setNewData = {setNewData} 
+          classId = {params.id}/>}
 
       {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
 
       <Container sx={{ width: "80vw" }}>
-        <Container>
-
-          <input
-            class="displayNone"
-            id="upload"
-            type="file"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              TemplateXML.readExcel(file);
-            }}
-          />
-          {teacher && <File />}
-          {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
+        <input
+          class="displayNone"
+          id="upload"
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            getData(file);
           
+            e.target.value = ""
+          }}
+        />
+        {teacher && <File />}
+        {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
+        <Container>
           <Typography variant="h4">Teacher</Typography>
-
-          <List data={classes.teacher} />
+          <List data={classes.teacher} type = {true} />
         </Container>
 
         <Container>
           <Typography variant="h4">Student</Typography>
-          <List data={classes.student} />
+          <List data={classes.student} type = {true} />
         </Container>
       </Container>
       <div></div>

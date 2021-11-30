@@ -1,5 +1,4 @@
 import XLSX from "xlsx";
-
 const StudentListTemplate = () => {
     var wb = XLSX.utils.book_new();
     wb.Props = {
@@ -65,9 +64,7 @@ const readExcel = (file) => {
         reject(error);
       };
     });
-  
-    promise.then((d) => {
-     console.log(d)
-    });
+    return promise
+   
   };
 export { StudentListTemplate, StudentGradeTemplate, readExcel} 

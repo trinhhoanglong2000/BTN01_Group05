@@ -26,36 +26,36 @@ export const getAccount = async () => {
 };
 
 // Update account
-export const updateAccount = async (
-  firstname,
-  lastname,
-  password,
-  dob,
-  studentid
-) => {
-  let message = null;
-  const test = await axios
-    .post(
-      `${URL}/Account/Update`,
-      {
-        firstname: firstname,
-        lastname: lastname,
-        password: password,
-        dob: dob,
-        student_id:studentid,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+  export const updateAccount = async (
+    firstname,
+    lastname,
+    password,
+    dob,
+    studentid
+  ) => {
+    let message = null;
+    const test = await axios
+      .post(
+        `${URL}/Account/Update`,
+        {
+          firstname: firstname,
+          lastname: lastname,
+          password: password,
+          dob: dob,
+          student_id:studentid,
         },
-      }
-    )
-    .catch((error) => {
-      message = error.response.data;
-    });
-  if (message != null) return message;
-  return test.data;
-};
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .catch((error) => {
+        message = error.response.data;
+      });
+    if (message != null) return message;
+    return test.data;
+  };
 
 //Classes API ----------------------------------------------------------------------------------
 
@@ -314,6 +314,33 @@ export const addStructure = async (
       {
         description: description,
         grade: parseInt(grade)
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const postListStudent = async (
+  listStudentData,
+  classId
+) => {
+  
+  console.log(listStudentData)
+  console.log(classId)
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/classes/addStudentList`,
+      {
+        listStudentData: listStudentData,
+        classId: classId,
       },
       {
         headers: {
