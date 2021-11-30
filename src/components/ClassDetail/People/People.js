@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-
+import XLSX from "xlsx";
 import List from "./List/List";
 import { Container } from "@mui/material";
-
+import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import { useParams, Navigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import { getAllAccountFromClass } from "../../../api";
+import Button from "@mui/material/Button";
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { display } from "@mui/system";
+import * as TemplateXML from "../../../FileTemplate"
 
 export const People = () => {
   const params = useParams();
@@ -21,6 +25,9 @@ export const People = () => {
         setLoading(false)
     };
   }, []);
+  const uploadClick = () =>{
+    document.getElementById("upload").click()
+  }
   const GetAllClass = async () => {
     setLoading(true);
     let data = {};
@@ -51,6 +58,34 @@ export const People = () => {
      
       <Container sx={{ width: "80vw" }}>
         <Container>
+       
+      <input
+        class = "displayNone"
+        id = "upload"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          TemplateXML.readExcel(file);
+        }}
+      />
+        <Button
+           onClick = {uploadClick}
+            sx={{
+              borderRadius: 5,
+              color: "white",
+              textTransform: "none",
+              background: "#3C403D",
+              "&:hover": {
+                background: "#3C403D",
+              },
+              marginBottom: 1,
+              marginTop: 3,
+            }}
+            variant="outlined"
+            startIcon={<UploadFileIcon/>}
+          >
+            Upload File 
+          </Button>
           <Typography variant="h4">Teacher</Typography>
 
           <List data={classes.teacher} />

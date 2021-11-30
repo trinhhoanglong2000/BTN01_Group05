@@ -14,6 +14,7 @@ import { getGradeStructure, getHomeWorks, CheckTeacher,RemoveHomeWork } from "..
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Accordion from "@mui/material/Accordion";
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
@@ -22,12 +23,14 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
+import * as TemplateXML from "../../../FileTemplate"
 export const Classwork = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [topic, setTopic] = useState(["All Topics"]);
   const [Update,setUpdate] = useState(false)
+  const [Upload,setUpload] = useState(false) 
   const [gradeStuct, setGradeStruct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alignment, setAlignment] = React.useState("ios");
@@ -62,6 +65,10 @@ export const Classwork = () => {
     setOpenDialog(true);
 
   };
+  const upload = (event) =>{
+    document.getElementById("upload").click()
+    document.getElementById("upload").value = "";
+  }
   const Delete = async (event) => {
     
     
@@ -113,6 +120,7 @@ export const Classwork = () => {
   };
   return (
     <div>
+      
       {!auth && <Navigate to="/login" />}
       {openDialog && (
         <CreateAssignment
@@ -134,6 +142,15 @@ export const Classwork = () => {
         <Container
           sx={{ width: "71%", marginTop: "5px", marginBottom: "10px" }}
         >
+          <input
+        class = "displayNone"
+        id = "upload"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          TemplateXML.readExcel(file);
+        }}
+      />
           <Button
             onClick={handleCreateAssignment}
             sx={{
@@ -220,6 +237,13 @@ export const Classwork = () => {
                       },
                     }}
                   >
+                    <MenuItem
+                      data-my-value={index}
+                      onClick={(event) => upload()}
+                    >
+                      <UploadFileIcon />
+                      Upload
+                    </MenuItem>
                     <MenuItem
                       data-my-value={index}
                       onClick={(event) => update(event)}
