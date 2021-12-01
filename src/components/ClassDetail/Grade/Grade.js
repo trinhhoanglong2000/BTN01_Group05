@@ -61,17 +61,18 @@ export const Grade = () => {
   const [teacher, setTeacher] = useState(false);
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const [grades, setGrades] = useState([]);
   const [newData, setNewData] = useState([]);
   const [Dialog, setDialog] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget.value);
+    setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setOpenUpdate(false);
-
     setAnchorEl(null);
   };
 
