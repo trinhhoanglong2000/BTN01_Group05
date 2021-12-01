@@ -9,7 +9,7 @@ import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GradeIcon from '@mui/icons-material/Grade';
 import SaveIcon from '@mui/icons-material/Save';
-export default function FormDialog({ data, set }) {
+export default function FormDialog({ data, set,onClick }) {
   const params = useParams();
   const navigate = useNavigate();
   const handleClickOpen = () => {
@@ -20,7 +20,7 @@ export default function FormDialog({ data, set }) {
     <div>
       <Container sx={{ width: "100%", marginTop: "5px", marginBottom: "10px",padding:'0!important',marginLeft:'10px!important',marginRight:'0!important'  }}>
       <Button
-          
+          onClick={onClick}
           sx={{
             fontSize: "12px",
 

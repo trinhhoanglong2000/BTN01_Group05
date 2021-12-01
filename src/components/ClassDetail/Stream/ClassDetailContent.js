@@ -146,7 +146,7 @@ const ClassDetail = () => {
             </Container>
           </Grid>
           <Grid item xs={20} sm={15} md={17}>
-            <Container sx={{ paddingRight: "0!important" }}>
+            <Container sx={{ paddingRight: "0!important",paddingLeft: "0!important"}}>
               {Thongbao ? (
                 <Container
                   sx={{

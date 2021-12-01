@@ -6,6 +6,8 @@ import {
   getAllAccountFromClass,
   getHomeWorks,
   CheckTeacher,
+  getAllGradeFromClass,
+  UpdateGrades
 } from "../../../api";
 import StructureButton from "./StructureButton/StructureButton";
 import Table from "@mui/material/Table";
@@ -26,38 +28,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 import * as TemplateXML from "../../../FileTemplate";
-import * as api from "../../../api"
-var FileSaver = require('file-saver');
-const rows = [
-  {
-    name: "Ice cream sandwich",
-    calories: 1,
-    fat: 2,
-    carbs: 3,
-    protein: 4,
-  },
-  {
-    name: "Ice cream sandwich 2",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 1232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 12232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-];
+import * as api from "../../../api";
+var FileSaver = require("file-saver");
 
 export const Grade = () => {
   const params = useParams();
@@ -69,10 +41,10 @@ export const Grade = () => {
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [grades,setGrades] = useState([]);
+  const [grades, setGrades] = useState([]);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget.value);
   };
   const handleClose = () => {
     setOpenUpdate(false);
@@ -88,25 +60,27 @@ export const Grade = () => {
   }, []);
 
   const getData = async (file) => {
-    let homeWorkData = await TemplateXML.readExcel(file)
-    var classId = homework[count].idclass
-    var homeworkId = homework[count].id
-    console.log(homeWorkData)
-    console.log(classId)
-    console.log(homeworkId)
-    var data = await api.postHomeWordGrade(homeWorkData,classId,homeworkId)
-    console.log(data)
-  }
+    let homeWorkData = await TemplateXML.readExcel(file);
+    var classId = homework[count].idclass;
+    var homeworkId = homework[count].id;
+    console.log(homeWorkData);
+    console.log(classId);
+    console.log(homeworkId);
+    var data = await api.postHomeWordGrade(homeWorkData, classId, homeworkId);
+    console.log(data);
+  };
   const GetGrade = async () => {
     setLoading(true);
 
     let data = {};
     let hw = {};
     let teach = {};
+    let allgrade = {};
     try {
       data = await getAllAccountFromClass(params.id);
       hw = await getHomeWorks(params.id);
       teach = await CheckTeacher(params.id);
+      allgrade = await getAllGradeFromClass(params.id);
     } catch (error) {
       console.log(error);
     }
@@ -120,29 +94,71 @@ export const Grade = () => {
       await setStudent(student);
 
       //set Up grades
-      let arr =[]
+      let arr = [];
       student.forEach((element) => {
         let tmp = [];
-        hw.data.forEach((value)=>{
-          tmp.push(null);
-        })
+        hw.data.forEach((value) => {
+          const temp = allgrade.data.find(
+            (ele) =>
+              ele.idaccount === element.accountid && ele.idhomework === value.id
+          );
+          if (temp == undefined) {
+            tmp.push(null);
+          } else {
+            tmp.push(temp.grade);
+          }
+        });
         arr.push(tmp);
       });
+
+      setGrades(arr);
     } else {
       if (data.message === "jwt expired") localStorage.clear();
       setAuth(false);
     }
     setLoading(false);
   };
-  const upload = () =>{
-  
-    document.getElementById("upload").click()
-    document.getElementById("upload").value=""
-   
-  }
-  const download = ()=>{
-    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGradeTemplate.xlsx')
-  }
+  const upload = () => {
+    document.getElementById("upload").click();
+    document.getElementById("upload").value = "";
+  };
+  const download = () => {
+    FileSaver.saveAs(
+      TemplateXML.StudentGradeTemplate(),
+      "StudentGradeTemplate.xlsx"
+    );
+  };
+  const saveGrade = () => {
+    let arr = [];
+
+    
+    grades.forEach((ele,ind)=>{
+      ele.forEach((value,index)=>{
+        if (value !==null){
+          arr.push({
+            grade:value,
+            idaccount: student[ind].accountid,
+            idhomework: homework[index].id,
+            idclass: homework[index].idclass,
+          })
+        }
+
+      })
+      
+    })
+    console.log(arr);
+
+  };
+  const handleGradechange = (e,id) => {
+    const studentId= e.target.name.split(" ");
+    const value = e.target.value;
+
+    const clone = grades.slice();
+    
+    clone[studentId[0]][studentId[1]] = value;
+    setGrades(clone);
+    
+  };
   return (
     <div>
       {!auth && <Navigate to="/login" />}
@@ -150,17 +166,17 @@ export const Grade = () => {
       {loading && (
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
-      <StructureButton />
+      <StructureButton onClick={saveGrade} />
       <input
-          class="displayNone"
-          id="upload"
-          type="file"
-          onChange={(e) => {
-            const file = e.target.files[0];
-            getData(file);
-            e.target.value = ""
-          }}
-        />
+        class="displayNone"
+        id="upload"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          getData(file);
+          e.target.value = "";
+        }}
+      />
       <TableContainer>
         <Table
           sx={{
@@ -219,8 +235,9 @@ export const Grade = () => {
 
                         padding: 0,
                         display: "-webkit-box",
-                        "-webkit-box-orient": "vertical",
-                        "-webkit-line-clamp": 2 /* number of lines to show */,
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 2,
+
                         lineHeight: "1.5em" /* fallback */,
                         maxHeight: "3em" /* fallback */,
                         flexGrow: 1,
@@ -252,17 +269,11 @@ export const Grade = () => {
                             },
                           }}
                         >
-                          <MenuItem
-                            data-my-value={index}
-                            onClick={upload}
-                          >
+                          <MenuItem data-my-value={index} onClick={upload}>
                             <FileUploadIcon />
                             Upload
                           </MenuItem>
-                          <MenuItem
-                            data-my-value={index}
-                            onClick={download}
-                          >
+                          <MenuItem data-my-value={index} onClick={download}>
                             <FileDownloadIcon />
                             Download
                           </MenuItem>
@@ -286,7 +297,7 @@ export const Grade = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {student.map((row) => (
+            {student.map((row, ind) => (
               <TableRow key={row.accountid}>
                 <TableCell
                   sx={{
@@ -311,25 +322,29 @@ export const Grade = () => {
                 >
                   {"null"}
                 </TableCell>
-                {homework.map((value, index) => (
-                  <TableCell
-                    key={index}
-                    sx={{
-                      width: "100px",
-                      border: "1px solid black",
-                      borderCollapse: "collapse",
-                      wordBreak: "break-word",
-                    }}
-                    align="left"
-                  >
-                    <TextField
-                      variant="standard"
-                      defaultValue={"Null"}
-                      InputProps={{ disableUnderline: true }}
 
-                    />
-                  </TableCell>
-                ))}
+                {grades.length !== 0 &&
+                  grades[ind].map((value, index) => (
+                    <TableCell
+                      key={index}
+                      sx={{
+                        width: "100px",
+                        border: "1px solid black",
+                        borderCollapse: "collapse",
+                        wordBreak: "break-word",
+                      }}
+                      align="left"
+                      onChange={(event,ind)=>handleGradechange(event,ind)}
+                    >
+                      <TextField
+                        name={`${ind.toString()} ${index}`}
+                        variant="standard"
+                        defaultValue={value}
+                        type="number"
+                        InputProps={{ disableUnderline: true }}
+                      />
+                    </TableCell>
+                  ))}
                 <TableCell
                   sx={{
                     border: "1px solid black",

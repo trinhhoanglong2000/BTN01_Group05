@@ -122,7 +122,48 @@ export const getGrade = async () => {
 
   return data;
 };
+export const getAllGradeFromClass = async (id) => {
+  let data = null;
+  await axios
 
+    .get(`${URL}/Grade/getAllGradeFromClass/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+export const UpdateGrades = async (
+  ListGrade
+) => {
+
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/classes/addStudentList`,
+      {
+        data: ListGrade,
+        
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
 //get HomeWork
 export const getHomeWorks= async (id) => {
   let data = null;
@@ -331,9 +372,7 @@ export const postListStudent = async (
   listStudentData,
   classId
 ) => {
-  
-  console.log(listStudentData)
-  console.log(classId)
+
   let message = null;
   const test = await axios
     .post(
