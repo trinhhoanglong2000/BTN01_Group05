@@ -18,6 +18,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
+import Preload from "./Preload/Preload"
 
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -25,49 +26,44 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
+import XLSX from "xlsx";
+import * as TemplateXML from "../../../FileTemplate"
 
-const rows = [
-  {
-    name: "Ice cream sandwich",
-    calories: 1,
-    fat: 2,
-    carbs: 3,
-    protein: 4,
-  },
-  {
-    name: "Ice cream sandwich 2",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 1232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 12232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-];
+var FileSaver = require('file-saver');
 
+
+var wb = XLSX.utils.book_new();
+wb.Props = {
+  Title: "SheetJS Tutorial",
+  Subject: "Test",
+  Author: "Red Stapler",
+  CreatedDate: new Date(2017, 12, 19)
+};
+wb.SheetNames.push("Test Sheet");
+var ws_data = [['hello', 'world']];  //a row with 2 columns
+var ws = XLSX.utils.aoa_to_sheet(ws_data);
+wb.Sheets["Test Sheet"] = ws;
+var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+function s2ab(s) {
+  var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+  var view = new Uint8Array(buf);  //create uint8array as viewer
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+  return buf;
+}
 export const Grade = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false);
   const [homework, setHomeWork] = useState([]);
   const [student, setStudent] = useState([]);
+  const [oldStudent, setOldStudent] = useState([]);
   const [teacher, setTeacher] = useState(false);
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [grades,setGrades] = useState([]);
+  const [grades, setGrades] = useState([]);
+  const [newData, setNewData] = useState([]);
+  const [Dialog, setDialog] = useState(false);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,6 +73,11 @@ export const Grade = () => {
 
     setAnchorEl(null);
   };
+
+  const downloadStudentGradeTemplate = () => {
+    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGrade.xlsx')
+  }
+
   useEffect(() => {
     GetGrade();
     return () => {
@@ -107,10 +108,10 @@ export const Grade = () => {
       await setStudent(student);
 
       //set Up grades
-      let arr =[]
+      let arr = []
       student.forEach((element) => {
         let tmp = [];
-        hw.data.forEach((value)=>{
+        hw.data.forEach((value) => {
           tmp.push(null);
         })
         arr.push(tmp);
@@ -121,13 +122,33 @@ export const Grade = () => {
     }
     setLoading(false);
   };
-  const upload = () =>{
+
+  //Excel handler
+  const upload = () => {
     //coi thu console log la thay dc du lieu cua homework dc chon
     console.log(homework[count]);
+    document.getElementById("uploadGrade").click()
   }
-  const download = ()=>{
-    console.log(homework[count]);
 
+  const getData = async (file) => {
+    let promiseData = await TemplateXML.readExcel(file)
+    
+    //filer newData
+    promiseData = promiseData.filter(item => item.StudentID != undefined && item.Grade != undefined)
+    for (let i = 0; i < promiseData.length; i++){
+      promiseData[i].Grade = promiseData[i].Grade > homework[count].grade ?  homework[count].grade: promiseData[i].Grade
+    }
+    
+    setNewData(promiseData)
+    //
+    let dataTemp = promiseData
+
+    dataTemp = dataTemp.map(item => { return item.StudentID.toString() })
+    let dataTempStudent = student
+    dataTempStudent = dataTempStudent.filter(item => !dataTemp.includes(item.student_id))
+    setOldStudent(dataTempStudent)
+    
+    setDialog(true)
   }
   return (
     <div>
@@ -136,6 +157,24 @@ export const Grade = () => {
       {loading && (
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
+      <input
+        class="displayNone"
+        id="uploadGrade"
+        type="file"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          getData(file);
+
+          e.target.value = ""
+        }}
+      />
+      {Dialog &&
+        <Preload newData={newData}
+          setDialog={setDialog}
+          student={oldStudent}
+          classId={params.id}
+          homework={homework[count]}
+        />}
       <StructureButton />
       <TableContainer>
         <Table
@@ -237,7 +276,7 @@ export const Grade = () => {
                           </MenuItem>
                           <MenuItem
                             data-my-value={index}
-                            onClick={download}
+                            onClick={downloadStudentGradeTemplate}
                           >
                             <FileDownloadIcon />
                             Download
