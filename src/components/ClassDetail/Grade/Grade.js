@@ -26,10 +26,46 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
+<<<<<<< HEAD
 import XLSX from "xlsx";
 import * as TemplateXML from "../../../FileTemplate"
 
 var FileSaver = require('file-saver');
+=======
+import * as TemplateXML from "../../../FileTemplate";
+import * as api from "../../../api"
+var FileSaver = require('file-saver');
+const rows = [
+  {
+    name: "Ice cream sandwich",
+    calories: 1,
+    fat: 2,
+    carbs: 3,
+    protein: 4,
+  },
+  {
+    name: "Ice cream sandwich 2",
+    calories: 12,
+    fat: 22,
+    carbs: 32,
+    protein: 42,
+  },
+  {
+    name: "Ice cream sandwich 1232",
+    calories: 12,
+    fat: 22,
+    carbs: 32,
+    protein: 42,
+  },
+  {
+    name: "Ice cream sandwich 12232",
+    calories: 12,
+    fat: 22,
+    carbs: 32,
+    protein: 42,
+  },
+];
+>>>>>>> 6c96f1e3b8315fba57135556639c2ad621f085ea
 
 
 var wb = XLSX.utils.book_new();
@@ -85,6 +121,17 @@ export const Grade = () => {
       setLoading(false);
     };
   }, []);
+
+  const getData = async (file) => {
+    let homeWorkData = await TemplateXML.readExcel(file)
+    var classId = homework[count].idclass
+    var homeworkId = homework[count].id
+    console.log(homeWorkData)
+    console.log(classId)
+    console.log(homeworkId)
+    var data = await api.postHomeWordGrade(homeWorkData,classId,homeworkId)
+    console.log(data)
+  }
   const GetGrade = async () => {
     setLoading(true);
 
@@ -122,6 +169,7 @@ export const Grade = () => {
     }
     setLoading(false);
   };
+<<<<<<< HEAD
 
   //Excel handler
   const upload = () => {
@@ -149,6 +197,16 @@ export const Grade = () => {
     setOldStudent(dataTempStudent)
     
     setDialog(true)
+=======
+  const upload = () =>{
+  
+    document.getElementById("upload").click()
+    document.getElementById("upload").value=""
+   
+  }
+  const download = ()=>{
+    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGradeTemplate.xlsx')
+>>>>>>> 6c96f1e3b8315fba57135556639c2ad621f085ea
   }
   return (
     <div>
@@ -176,6 +234,16 @@ export const Grade = () => {
           homework={homework[count]}
         />}
       <StructureButton />
+      <input
+          class="displayNone"
+          id="upload"
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            getData(file);
+            e.target.value = ""
+          }}
+        />
       <TableContainer>
         <Table
           sx={{
