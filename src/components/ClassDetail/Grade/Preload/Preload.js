@@ -24,12 +24,16 @@ export default function AlertDialog({ newData, setDialog, student, classId, home
     };
 
     const handleAgree = async () => {
-        var data = await api.postListStudent(newData, classId)
+        console.log(newData)
+        console.log(classId)
+        console.log(homework.id)
+     
+        var data = await api.postHomeWordGrade(newData,classId,homework.id) 
         console.log(data)
 
         setOpen(false);
         setDialog(false);
-
+        window.location.reload(true);
     }
     return (
 

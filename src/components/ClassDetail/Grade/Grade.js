@@ -211,8 +211,8 @@ export const Grade = () => {
     setDialog(true);
   };
   const reducer = (accumulator, curr) => {
-    if (curr !== null && curr !== undefined) return accumulator + curr;
-    return accumulator + 0;
+    if (curr !== null && curr !== undefined) return parseInt(accumulator) + parseInt(curr);
+    return parseInt(accumulator) + 0;
   };
 
   return (
