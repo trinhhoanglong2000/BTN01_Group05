@@ -85,6 +85,17 @@ export const Grade = () => {
       setLoading(false);
     };
   }, []);
+
+  // const getData = async (file) => {
+  //   let homeWorkData = await TemplateXML.readExcel(file)
+  //   var classId = homework[count].idclass
+  //   var homeworkId = homework[count].id
+  //   console.log(homeWorkData)
+  //   console.log(classId)
+  //   console.log(homeworkId)
+  //   var data = await api.postHomeWordGrade(homeWorkData,classId,homeworkId)
+  //   console.log(data)
+  // }
   const GetGrade = async () => {
     setLoading(true);
 
@@ -128,6 +139,7 @@ export const Grade = () => {
     //coi thu console log la thay dc du lieu cua homework dc chon
     console.log(homework[count]);
     document.getElementById("uploadGrade").click()
+    document.getElementById("uploadGrade").value=""
   }
 
   const getData = async (file) => {
@@ -176,6 +188,16 @@ export const Grade = () => {
           homework={homework[count]}
         />}
       <StructureButton />
+      <input
+          class="displayNone"
+          id="upload"
+          type="file"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            getData(file);
+            e.target.value = ""
+          }}
+        />
       <TableContainer>
         <Table
           sx={{

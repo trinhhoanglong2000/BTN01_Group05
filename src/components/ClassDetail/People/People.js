@@ -54,7 +54,6 @@ export const People = () => {
     let promiseData = await TemplateXML.readExcel(file)
 
     promiseData = promiseData.filter(item => item.StudentID != undefined)
-
     //
     let dataTemp = classes.student
     dataTemp = dataTemp.map(item => { return item.student_id })
