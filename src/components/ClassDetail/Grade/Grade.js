@@ -26,54 +26,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 3990b94509edd29bb11718267f49020f18e920b5
+
 import XLSX from "xlsx";
 import * as TemplateXML from "../../../FileTemplate"
 
 var FileSaver = require('file-saver');
-<<<<<<< HEAD
-=======
-=======
-import * as TemplateXML from "../../../FileTemplate";
-import * as api from "../../../api"
-var FileSaver = require('file-saver');
-const rows = [
-  {
-    name: "Ice cream sandwich",
-    calories: 1,
-    fat: 2,
-    carbs: 3,
-    protein: 4,
-  },
-  {
-    name: "Ice cream sandwich 2",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 1232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-  {
-    name: "Ice cream sandwich 12232",
-    calories: 12,
-    fat: 22,
-    carbs: 32,
-    protein: 42,
-  },
-];
->>>>>>> 6c96f1e3b8315fba57135556639c2ad621f085ea
->>>>>>> 3990b94509edd29bb11718267f49020f18e920b5
-
-
 var wb = XLSX.utils.book_new();
 wb.Props = {
   Title: "SheetJS Tutorial",
@@ -175,10 +132,6 @@ export const Grade = () => {
     }
     setLoading(false);
   };
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 3990b94509edd29bb11718267f49020f18e920b5
 
   //Excel handler
   const upload = () => {
@@ -207,19 +160,6 @@ export const Grade = () => {
     setOldStudent(dataTempStudent)
     
     setDialog(true)
-<<<<<<< HEAD
-=======
-=======
-  const upload = () =>{
-  
-    document.getElementById("upload").click()
-    document.getElementById("upload").value=""
-   
-  }
-  const download = ()=>{
-    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGradeTemplate.xlsx')
->>>>>>> 6c96f1e3b8315fba57135556639c2ad621f085ea
->>>>>>> 3990b94509edd29bb11718267f49020f18e920b5
   }
   return (
     <div>
