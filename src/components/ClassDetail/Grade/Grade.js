@@ -388,7 +388,7 @@ export const Grade = () => {
                   component="th"
                   scope="row"
                 >
-                  <Typography noWrap>{row.email}</Typography>
+                  <Typography noWrap>{row.student_id}</Typography>
                 </TableCell>
                 <TableCell
                   sx={{
@@ -399,7 +399,7 @@ export const Grade = () => {
                   }}
                   align="left"
                 >
-                  {grades.length !== 0 && grades[ind].reduce(reducer)}
+                  {grades.length !== 0 && grades[0].length!==0 && grades[ind].reduce(reducer)}
                 </TableCell>
 
                 {grades.length !== 0 &&
