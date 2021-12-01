@@ -147,7 +147,7 @@ export const UpdateGrades = async (
   let message = null;
   const test = await axios
     .post(
-      `${URL}/classes/addStudentList`,
+      `${URL}/Grade/UpdateGrades`,
       {
         data: ListGrade,
         

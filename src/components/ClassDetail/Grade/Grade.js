@@ -7,7 +7,7 @@ import {
   getHomeWorks,
   CheckTeacher,
   getAllGradeFromClass,
-  UpdateGrades
+  UpdateGrades,
 } from "../../../api";
 import StructureButton from "./StructureButton/StructureButton";
 import Table from "@mui/material/Table";
@@ -20,7 +20,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import IconButton from "@mui/material/IconButton";
-import Preload from "./Preload/Preload"
+import Preload from "./Preload/Preload";
 
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -30,25 +30,25 @@ import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 
 import XLSX from "xlsx";
-import * as TemplateXML from "../../../FileTemplate"
+import * as TemplateXML from "../../../FileTemplate";
 
-var FileSaver = require('file-saver');
+var FileSaver = require("file-saver");
 var wb = XLSX.utils.book_new();
 wb.Props = {
   Title: "SheetJS Tutorial",
   Subject: "Test",
   Author: "Red Stapler",
-  CreatedDate: new Date(2017, 12, 19)
+  CreatedDate: new Date(2017, 12, 19),
 };
 wb.SheetNames.push("Test Sheet");
-var ws_data = [['hello', 'world']];  //a row with 2 columns
+var ws_data = [["hello", "world"]]; //a row with 2 columns
 var ws = XLSX.utils.aoa_to_sheet(ws_data);
 wb.Sheets["Test Sheet"] = ws;
-var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+var wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
 function s2ab(s) {
   var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
-  var view = new Uint8Array(buf);  //create uint8array as viewer
-  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+  var view = new Uint8Array(buf); //create uint8array as viewer
+  for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff; //convert to octet
   return buf;
 }
 export const Grade = () => {
@@ -76,8 +76,8 @@ export const Grade = () => {
   };
 
   const downloadStudentGradeTemplate = () => {
-    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), 'StudentGrade.xlsx')
-  }
+    FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), "StudentGrade.xlsx");
+  };
 
   useEffect(() => {
     GetGrade();
@@ -137,66 +137,83 @@ export const Grade = () => {
     setLoading(false);
   };
 
-  const saveGrade = () => {
+  const saveGrade = async () => {
     let arr = [];
+    setLoading(true);
 
-    
-    grades.forEach((ele,ind)=>{
-      ele.forEach((value,index)=>{
-        if (value !==null){
+    grades.forEach((ele, ind) => {
+      ele.forEach((value, index) => {
+        if (value !== null) {
           arr.push({
-            grade:value,
+            grade: value,
             idaccount: student[ind].accountid,
             idhomework: homework[index].id,
             idclass: homework[index].idclass,
-          })
+          });
         }
-
-      })
-      
-    })
-    console.log(arr);
-
+      });
+    });
+    let result = {};
+    try {
+      result = await UpdateGrades(arr);
+    } catch (error) {}
+    if (result.success) {
+    } else {
+    }
+    setLoading(false);
   };
-  const handleGradechange = (e,id) => {
-    const studentId= e.target.name.split(" ");
+  const handleGradechange = (e, id) => {
+    const studentId = e.target.name.split(" ");
     const value = e.target.value;
 
     const clone = grades.slice();
-    
+
     clone[studentId[0]][studentId[1]] = value;
     setGrades(clone);
-    
   };
 
   //Excel handler
   const upload = () => {
     //coi thu console log la thay dc du lieu cua homework dc chon
     console.log(homework[count]);
-    document.getElementById("uploadGrade").click()
-    document.getElementById("uploadGrade").value=""
-  }
+    document.getElementById("uploadGrade").click();
+    document.getElementById("uploadGrade").value = "";
+  };
 
   const getData = async (file) => {
-    let promiseData = await TemplateXML.readExcel(file)
-    
-    //filer newData
-    promiseData = promiseData.filter(item => item.StudentID != undefined && item.Grade != undefined)
-    for (let i = 0; i < promiseData.length; i++){
-      promiseData[i].Grade = promiseData[i].Grade > homework[count].grade ?  homework[count].grade: promiseData[i].Grade
-    }
-    
-    setNewData(promiseData)
-    //
-    let dataTemp = promiseData
+    let promiseData = await TemplateXML.readExcel(file);
 
-    dataTemp = dataTemp.map(item => { return item.StudentID.toString() })
-    let dataTempStudent = student
-    dataTempStudent = dataTempStudent.filter(item => !dataTemp.includes(item.student_id))
-    setOldStudent(dataTempStudent)
-    
-    setDialog(true)
-  }
+    //filer newData
+    promiseData = promiseData.filter(
+      (item) => item.StudentID != undefined && item.Grade != undefined
+    );
+    for (let i = 0; i < promiseData.length; i++) {
+      promiseData[i].Grade =
+        promiseData[i].Grade > homework[count].grade
+          ? homework[count].grade
+          : promiseData[i].Grade;
+    }
+
+    setNewData(promiseData);
+    //
+    let dataTemp = promiseData;
+
+    dataTemp = dataTemp.map((item) => {
+      return item.StudentID.toString();
+    });
+    let dataTempStudent = student;
+    dataTempStudent = dataTempStudent.filter(
+      (item) => !dataTemp.includes(item.student_id)
+    );
+    setOldStudent(dataTempStudent);
+
+    setDialog(true);
+  };
+  const reducer = (accumulator, curr) => {
+    if (curr !== null && curr !== undefined) return accumulator + curr;
+    return accumulator + 0;
+  };
+
   return (
     <div>
       {!auth && <Navigate to="/login" />}
@@ -212,17 +229,19 @@ export const Grade = () => {
           const file = e.target.files[0];
           getData(file);
 
-          e.target.value = ""
+          e.target.value = "";
         }}
       />
-      {Dialog &&
-        <Preload newData={newData}
+      {Dialog && (
+        <Preload
+          newData={newData}
           setDialog={setDialog}
           student={oldStudent}
           classId={params.id}
           homework={homework[count]}
-        />}
-      <StructureButton onClick={saveGrade}/>
+        />
+      )}
+      <StructureButton onClick={saveGrade} disabled={loading} />
       <input
         class="displayNone"
         id="upload"
@@ -379,7 +398,7 @@ export const Grade = () => {
                   }}
                   align="left"
                 >
-                  {"null"}
+                  {grades.length !== 0 && grades[ind].reduce(reducer)}
                 </TableCell>
 
                 {grades.length !== 0 &&
@@ -393,7 +412,7 @@ export const Grade = () => {
                         wordBreak: "break-word",
                       }}
                       align="left"
-                      onChange={(event,ind)=>handleGradechange(event,ind)}
+                      onChange={(event, ind) => handleGradechange(event, ind)}
                     >
                       <TextField
                         name={`${ind.toString()} ${index}`}

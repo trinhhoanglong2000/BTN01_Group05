@@ -9,7 +9,7 @@ import { Container } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GradeIcon from '@mui/icons-material/Grade';
 import SaveIcon from '@mui/icons-material/Save';
-export default function FormDialog({ data, set,onClick }) {
+export default function FormDialog({ data, set,onClick,disabled }) {
   const params = useParams();
   const navigate = useNavigate();
   const handleClickOpen = () => {
@@ -37,6 +37,7 @@ export default function FormDialog({ data, set,onClick }) {
             // position: "absolute",
             // right: 0
           }}
+          disabled={disabled}
           variant="outlined"
         >
           <SaveIcon sx={{marginRight:'5px'}}/>
@@ -61,6 +62,8 @@ export default function FormDialog({ data, set,onClick }) {
             // position: "absolute",
             // right: 0
           }}
+          disabled={disabled}
+
           variant="outlined"
         >
           <GradeIcon/>
