@@ -52,16 +52,13 @@ export const People = () => {
   };
   const getData = async (file) => {
     let promiseData = await TemplateXML.readExcel(file)
-    
+
     promiseData = promiseData.filter(item => item.StudentID != undefined)
-    
-    console.log(promiseData)
-  
     //
     let dataTemp = classes.student
     dataTemp = dataTemp.map(item => { return item.student_id })
     promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
-    
+
     dataTemp = classes.teacher
     dataTemp = dataTemp.map(item => { return item.student_id })
     promiseData = promiseData.filter(item => !dataTemp.includes(item.StudentID.toString()))
@@ -76,8 +73,8 @@ export const People = () => {
         <Preload newData={newData}
           setDialog={setDialog}
           student={classes.student}
-          classId = {params.id}
-          />}
+          classId={params.id}
+        />}
 
       {loading && <LinearProgress sx={{ position: "fixed", top: 64, width: '100vw' }} />}
 
@@ -89,7 +86,7 @@ export const People = () => {
           onChange={(e) => {
             const file = e.target.files[0];
             getData(file);
-          
+
             e.target.value = ""
           }}
         />
@@ -97,12 +94,12 @@ export const People = () => {
         {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
         <Container>
           <Typography variant="h4">Teacher</Typography>
-          <List data={classes.teacher} type = {true} />
+          <List data={classes.teacher} type={true} />
         </Container>
 
         <Container>
           <Typography variant="h4">Student</Typography>
-          <List data={classes.student} type = {true} />
+          <List data={classes.student} type={true} />
         </Container>
       </Container>
       <div></div>

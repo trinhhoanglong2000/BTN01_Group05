@@ -21,6 +21,7 @@ export default function AlertDialog({ newData, setDialog, student, classId}) {
         
         setOpen(false);
         setDialog(false);
+        window.location.reload(true);
         
     }
     return (
@@ -30,6 +31,7 @@ export default function AlertDialog({ newData, setDialog, student, classId}) {
             <Dialog
                 open={open}
                 onClose={handleClose}
+                scroll= 'paper'
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 PaperProps={{ style: { width: '1000px' } }}
