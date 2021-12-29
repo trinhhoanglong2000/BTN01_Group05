@@ -8,8 +8,8 @@ import { Navigate } from "react-router-dom";
 
 import Typography from "@mui/material/Typography";
 import { DrawerAdmin as Drawer } from "./Drawer";
-import { CheckAdmin, getAllAccount } from "../../api";
-import LinearProgress from '@mui/material/LinearProgress';
+import { CheckAdmin, getAllAccount, adminUpdateAccount } from "../../api";
+import LinearProgress from "@mui/material/LinearProgress";
 
 import MaterialTable from "material-table";
 import GetAppIcon from "@mui/icons-material/GetApp";
@@ -31,7 +31,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
 import moment from "moment";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBoxIcon {...props} ref={ref} />),
   Check: forwardRef((props, ref) => <CheckIcon {...props} ref={ref} />),
@@ -77,38 +77,61 @@ export const AdminPage = () => {
       dob: "Chennai",
       admin: false,
     },
-
   ]);
   const columns = [
     {
       title: "Firstname",
       field: "firstname",
+      emptyValue: () => <em></em>,
     },
     {
       title: "Lastname",
       field: "lastname",
+      emptyValue: () => <em></em>,
     },
-    { title: "Email", field: "email" },
-    { title: "Phone Number", field: "phone", align: "center" },
+    { title: "Email", field: "email", emptyValue: () => <em></em> },
+    {
+      title: "Phone Number",
+      field: "phone",
+      emptyValue: () => <em></em>,
+      align: "center",
+    },
 
     {
       title: "Gender",
       field: "gender",
+      emptyValue: ()=><em></em>,
+
       lookup: { true: "Male", false: "Female" },
     },
     {
       title: "DateOfBirth",
       field: "dob",
-      // render: (rowData) => (
-      //   <div>{moment(rowData.dob).format("DD/MM/YYYY")} </div>
-      // ),
-      filtering:false,
+      emptyValue: ()=><em></em>,
+      
     },
     {
       title: "Type",
       field: "admin",
-      editable: "never",
+      emptyValue: ()=><em></em>,
+
+      // editable: "never",
       lookup: { true: "Admin", false: "User" },
+    },
+
+    {
+      title: "StudentId",
+      field: "student_id",
+      emptyValue: ()=><em></em>,
+
+    },
+    {
+      title: "Status",
+      field: "isban",
+      lookup: { true: "Banned", false: "Unbanned" },
+      emptyValue: ()=><em></em>,
+      
+
     },
   ];
   const [auth, setAuth] = useState(true);
@@ -136,16 +159,18 @@ export const AdminPage = () => {
       setAuth(false);
     }
     if (accounts.success) {
-      const tmp = accounts.data.map((value)=> {return {...value,dob:moment(value.dob).format("DD/MM/YYYY")}})
-      
+      const tmp = accounts.data.map((value) => {
+        return { ...value, dob: value.dob==null? null:moment(value.dob).format("DD/MM/YYYY") };
+      });
+      console.log(accounts.data);
       setTableData(tmp);
     }
   };
-  //console.log(tableData);
+
   return (
     <>
       {!auth && <Navigate to="/" />}
-      {!isAuth && <LinearProgress/>}
+      {!isAuth && <LinearProgress />}
       {isAuth && (
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
@@ -182,26 +207,28 @@ export const AdminPage = () => {
                   new Promise((resolve, reject) => {
                     const updatedData = [...tableData];
                     updatedData[oldRow.tableData.id] = newRow;
+
                     setTableData(updatedData);
-                    setTimeout(() => resolve(), 500);
+                    
+                    //update on data
+                    adminUpdateAccount(
+                      newRow.firstname,
+                      newRow.lastname,
+                      newRow.admin,
+                      newRow.dob,
+                      newRow.student_id,
+                      newRow.phone,
+                      newRow.email,
+                      newRow.id,
+                      newRow.gender,
+                      newRow.isban,
+                    ).then(() => resolve());
                   }),
-                onRowDelete: (selectedRow) =>
-                  new Promise((resolve, reject) => {
-                    const updatedData = [...tableData];
-                    updatedData.splice(selectedRow.tableData.id, 1);
-                    setTableData(updatedData);
-                    setTimeout(() => resolve(), 1000);
-                  }),
+
               }}
-              actions={[
-                {
-                  icon: () => <GetAppIcon />,
-                  tooltip: "Click me",
-                  onClick: (e, data) => console.log(data),
-                  // isFreeAction:true
-                },
-              ]}
+     
               onSelectionChange={(selectedRows) => console.log(selectedRows)}
+              
               options={{
                 sorting: true,
                 search: true,
@@ -220,7 +247,7 @@ export const AdminPage = () => {
                 exportFileName: "TableData",
                 addRowPosition: "first",
                 actionsColumnIndex: -1,
-                selection: true,
+                selection: false,
                 showSelectAllCheckbox: false,
                 showTextRowsSelected: false,
 

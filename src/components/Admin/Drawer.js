@@ -15,7 +15,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 export const DrawerAdmin = () => {
   const navigate = useNavigate();
