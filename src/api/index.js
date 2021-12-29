@@ -2,7 +2,6 @@ import axios from "axios";
 
 const URL = process.env.REACT_APP_API_URL;
 
-
 // Account API ---------------------------------------------------------------------------------
 
 //Get a account
@@ -26,36 +25,78 @@ export const getAccount = async () => {
 };
 
 // Update account
-  export const updateAccount = async (
-    firstname,
-    lastname,
-    password,
-    dob,
-    studentid
-  ) => {
-    let message = null;
-    const test = await axios
-      .post(
-        `${URL}/Account/Update`,
-        {
-          firstname: firstname,
-          lastname: lastname,
-          password: password,
-          dob: dob,
-          student_id:studentid,
+export const updateAccount = async (
+  firstname,
+  lastname,
+  password,
+  dob,
+  studentid
+) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/Account/Update`,
+      {
+        firstname: firstname,
+        lastname: lastname,
+        password: password,
+        dob: dob,
+        student_id: studentid,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .catch((error) => {
-        message = error.response.data;
-      });
-    if (message != null) return message;
-    return test.data;
-  };
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const adminUpdateAccount = async (
+  firstname,
+  lastname,
+  admin,
+  dob,
+  studentid,
+  phone,
+  email,
+  id,
+  gender,
+  isban,
+) => {
+
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/Admin/Update`,
+      {
+        firstname: firstname,
+        lastname: lastname,
+        admin: admin,
+        dob: dob,
+        student_id: studentid,
+        phone:phone,
+        email:email,
+        id: id,
+        gender:gender,
+        isban:isban,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+
 
 //Classes API ----------------------------------------------------------------------------------
 
@@ -78,7 +119,7 @@ export const getAllClass = async () => {
 
   return data;
 };
-// Create a Class 
+// Create a Class
 export const createClass = async (name, Section, Subject, Room) => {
   let message = null;
   const test = await axios
@@ -158,17 +199,13 @@ export const getAllGradeFromClass = async (id) => {
 
   return data;
 };
-export const UpdateGrades = async (
-  ListGrade
-) => {
-
+export const UpdateGrades = async (ListGrade) => {
   let message = null;
   const test = await axios
     .post(
       `${URL}/Grade/UpdateGrades`,
       {
         data: ListGrade,
-        
       },
       {
         headers: {
@@ -184,7 +221,7 @@ export const UpdateGrades = async (
 };
 
 //get HomeWork
-export const getHomeWorks= async (id) => {
+export const getHomeWorks = async (id) => {
   let data = null;
   await axios
 
@@ -206,15 +243,11 @@ export const getHomeWorks= async (id) => {
 export const createHomeWork = async (data) => {
   let message = null;
   const test = await axios
-    .post(
-      `${URL}/HomeWork/AddHomeWork`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    .post(`${URL}/HomeWork/AddHomeWork`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
     .catch((error) => {
       message = error.response.data;
     });
@@ -224,15 +257,11 @@ export const createHomeWork = async (data) => {
 export const UpdateHomeWork = async (data) => {
   let message = null;
   const test = await axios
-    .post(
-      `${URL}/HomeWork/UpdateHomeWork`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    .post(`${URL}/HomeWork/UpdateHomeWork`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
     .catch((error) => {
       message = error.response.data;
     });
@@ -242,15 +271,11 @@ export const UpdateHomeWork = async (data) => {
 export const RemoveHomeWork = async (data) => {
   let message = null;
   const test = await axios
-    .post(
-      `${URL}/HomeWork/RemoveHomeWork`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    )
+    .post(`${URL}/HomeWork/RemoveHomeWork`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
     .catch((error) => {
       message = error.response.data;
     });
@@ -277,12 +302,49 @@ export const getAllAccountFromClass = async (id) => {
 
   return data;
 };
+export const getAllAccount = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Account/getAll`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
 //Check teacher
 export const CheckTeacher = async (id) => {
   let data = null;
   await axios
 
     .get(`${URL}/classesaccount/checkTeacher/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+//Check Admin
+export const CheckAdmin = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Account/isAdmin`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -344,7 +406,7 @@ export const Register = async (
 
 export const getGradeStructure = async (id) => {
   let data = null;
- 
+
   await axios
     .get(`${URL}/GradeStructure/GetStructure/${id}`, {
       headers: {
@@ -353,7 +415,6 @@ export const getGradeStructure = async (id) => {
     })
     .then((res) => {
       data = res.data;
-     
     })
     .catch((error) => {
       data = error.response.data;
@@ -362,18 +423,14 @@ export const getGradeStructure = async (id) => {
   return data;
 };
 
-export const addStructure = async (
-  idclass,
-  description,
-  grade,
-) => {
+export const addStructure = async (idclass, description, grade) => {
   let message = null;
   const test = await axios
     .post(
       `${URL}/GradeStructure/AddStructure/${idclass}`,
       {
         description: description,
-        grade: parseInt(grade)
+        grade: parseInt(grade),
       },
       {
         headers: {
@@ -387,11 +444,7 @@ export const addStructure = async (
   if (message != null) return message;
   return test.data;
 };
-export const postListStudent = async (
-  listStudentData,
-  classId
-) => {
-
+export const postListStudent = async (listStudentData, classId) => {
   let message = null;
   const test = await axios
     .post(
@@ -412,11 +465,7 @@ export const postListStudent = async (
   if (message != null) return message;
   return test.data;
 };
-export const postHomeWordGrade = async (
-  homeworkData,
-  classId,
-  homeworkId
-) => {
+export const postHomeWordGrade = async (homeworkData, classId, homeworkId) => {
   let message = null;
   const test = await axios
     .post(
@@ -424,7 +473,7 @@ export const postHomeWordGrade = async (
       {
         homeworkData: homeworkData,
         classId: classId,
-        homeworkId:homeworkId
+        homeworkId: homeworkId,
       },
       {
         headers: {

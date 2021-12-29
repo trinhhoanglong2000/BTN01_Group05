@@ -16,6 +16,7 @@
     "axios": "^0.24.0",
     "date-fns": "^2.25.0",
     "file-saver": "^2.0.5",
+    "material-table": "^1.69.3",
     "material-ui-phone-number": "^3.0.0",
     "moment": "^2.29.1",
     "react": "^17.0.2",
