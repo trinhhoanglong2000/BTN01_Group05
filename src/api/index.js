@@ -258,12 +258,49 @@ export const getAllAccountFromClass = async (id) => {
 
   return data;
 };
+export const getAllAccount = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Account/getAll`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
 //Check teacher
 export const CheckTeacher = async (id) => {
   let data = null;
   await axios
 
     .get(`${URL}/classesaccount/checkTeacher/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+//Check Admin
+export const CheckAdmin = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Account/isAdmin`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
