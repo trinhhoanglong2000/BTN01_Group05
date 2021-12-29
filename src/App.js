@@ -9,7 +9,8 @@ import {
   Classwork,
   ShowGrade,
   GradeStructure,
-  Grade
+  Grade,
+  StudentGrade
 } from "./components";
 
 import { BrowserRouter as Router, Routes, Route,Outlet  } from "react-router-dom";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/ClassDetail/:id/Classwork" element={<Classwork />} />
           <Route path="/ClassDetail/:id/GradeStructure" element={<GradeStructure />} />
           <Route path="/ClassDetail/:id/Grade" element={<Grade />} />
+          <Route path="/ClassDetail/:id/StudentGrade" element={<StudentGrade />} />
         </Route>
         <Route
           path="/AccessInviteLink"

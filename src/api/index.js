@@ -122,6 +122,24 @@ export const getGrade = async () => {
 
   return data;
 };
+export const getGradeOfStudentFromClass = async (id) => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/Grade/GetAllGradeOfStudent/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
 export const getAllGradeFromClass = async (id) => {
   let data = null;
   await axios
@@ -164,6 +182,7 @@ export const UpdateGrades = async (
   if (message != null) return message;
   return test.data;
 };
+
 //get HomeWork
 export const getHomeWorks= async (id) => {
   let data = null;

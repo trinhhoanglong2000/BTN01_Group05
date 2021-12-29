@@ -1,14 +1,23 @@
 import * as React from 'react';
 import Accordion from '../Accordion/Accordion'
-import { SortableElement,sortableHandle } from 'react-sortable-hoc'
+import Grid from '@mui/material/Grid';
+import Typography from "@mui/material/Typography";
+import { SortableElement, sortableHandle } from 'react-sortable-hoc'
 const DataElement = SortableElement(({ data, homework }) => {
     const DragHandle = sortableHandle(() => <span>::</span>);
 
     return (
-        <div style={{}}>
+        <div>
+            <Grid container spacing={2} sx = {{marginTop:1}}>
             {/* <DragHandle/> */}
-            <Accordion data={data} homework = {homework} />
-        </div>
+            <Grid xs={11}>
+                <Accordion data={data} homework={homework} />
+            </Grid>
+            <Grid xs={1}>
+                <Typography>Long</Typography>
+            </Grid>
+        </Grid>
+        </div >
     )
 })
 export default DataElement

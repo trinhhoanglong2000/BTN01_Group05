@@ -12,7 +12,7 @@ export default function ColorToggleButton({ sx }) {
     setAlignment(newAlignment);
   };
   const handleClick = (e) => {
-    navigate(`/ClassDetail/${params.id}/${e.target.value}`);
+      navigate(`/ClassDetail/${params.id}/${e.target.value}`);
   };
 
   useEffect(() => {
@@ -86,6 +86,21 @@ export default function ColorToggleButton({ sx }) {
       {teacher && (
         <ToggleButton
           value="Grade"
+          onClick={handleClick}
+          sx={{
+            color: "black",
+            border: "none",
+            fontSize: "0.7rem",
+            textTransform: "none",
+          }}
+        >
+          {" "}
+          Grade
+        </ToggleButton>
+      )}
+       {!teacher && (
+        <ToggleButton
+          value="StudentGrade"
           onClick={handleClick}
           sx={{
             color: "black",

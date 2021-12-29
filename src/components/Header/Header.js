@@ -21,7 +21,7 @@ import { getAccount } from "../../api";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { default as ManageAccount } from "./Dialog/ManageAccount";
-
+import SimpleBadge from "./Badge/Badge";
 import ColorToggleButton from "./ToggleButton/ToggleButton";
 export default function Header() {
   const params = useParams();
@@ -78,7 +78,7 @@ export default function Header() {
           }}
         >
           <Toolbar sx={{ paddingLeft: "0 !important", position: "relative" }}>
-            <Toolbar sx={{ position: "absolute;", top: "0px;", left: "0px;",height:'100%' }}>
+            <Toolbar sx={{ position: "absolute;", top: "0px;", left: "0px;", height: '100%' }}>
               <Drawer />
 
               <Typography
@@ -95,34 +95,44 @@ export default function Header() {
                   margin: "0px auto;",
                   "@media (max-width: 670px)": {
                     alignItems: 'flex-end',
-                    height:'150px'
-                  
+                    height: '150px'
+
                   },
                 }}
               />
             )}
-
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              sx={{
+            <div style ={{width:75}}>
+              <SimpleBadge sx={{
                 ml: 2,
                 mr: 2,
                 position: "absolute",
                 top: "0px;",
-                right: "0px;",
+                right: "100px",
                 height: "100%",
-              }}
-            >
-              <Avatar
+              }} />
+              <IconButton
+                onClick={handleClick}
+                size="small"
                 sx={{
-                  width: 32,
-                  height: 32,
+                  ml: 2,
+                  mr: 2,
+                  position: "absolute",
+                  top: "0px;",
+                  right: "0px;",
+                  height: "100%",
                 }}
               >
-                M
-              </Avatar>
-            </IconButton>
+                <Avatar
+                  sx={{
+                    width: 32,
+                    height: 32,
+                  }}
+                >
+                  M
+                </Avatar>
+              </IconButton>
+
+            </div>
             {/*  */}
 
             <Menu
@@ -171,6 +181,7 @@ export default function Header() {
                 disabled
               >
                 <Avatar>M</Avatar>
+
               </MenuItem>
 
               <MenuItem

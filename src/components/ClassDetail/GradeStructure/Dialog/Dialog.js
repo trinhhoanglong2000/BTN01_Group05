@@ -82,7 +82,7 @@ export default function FormDialog({ data, set }) {
           >
             Create
           </Button>
-          <Divider sx={{ marginY: "10px", background: "black" }} />
+          <Divider sx={{ marginY: "10px", background: "black", marginBottom: 2}} />
         </Container>
       <Dialog open={open} onClose={handleClose}>
       {loading && (

@@ -5,7 +5,7 @@ import { SortableContainer } from 'react-sortable-hoc'
 const DataList = SortableContainer(({ data, homework }) => {
    
     return (
-        <Container sx={{ width: "80vw" }}>
+        <Container sx={{ width: "60vw" }}>
             {data.map((item, key) => {
 
                 return (

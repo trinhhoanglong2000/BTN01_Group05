@@ -237,7 +237,7 @@ export const Classwork = () => {
                       },
                     }}
                   >
-                    
+
                     <MenuItem
                       data-my-value={index}
                       onClick={(event) => update(event)}
