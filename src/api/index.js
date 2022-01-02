@@ -119,6 +119,58 @@ export const getAllClass = async () => {
 
   return data;
 };
+export const getAllClassAdmin = async () => {
+  let data = null;
+  await axios
+
+    .get(`${URL}/classes/getAllClasses`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+
+  return data;
+};
+export const adminUpdateClass = async (
+  id,
+  name,
+  subject,
+  section,
+  room,
+
+) => {
+
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/classes/updateClass`,
+      {
+        name: name,
+        subject: subject,
+        room: room,
+        section: section,
+        
+        id: id,
+       
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
 // Create a Class
 export const createClass = async (name, Section, Subject, Room) => {
   let message = null;

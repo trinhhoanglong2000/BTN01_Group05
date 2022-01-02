@@ -11,7 +11,8 @@ import {
   GradeStructure,
   Grade,
   StudentGrade,
-  AdminPage
+  AdminPage,
+  AdminPageClass
 
 } from "./components";
 
@@ -35,6 +36,9 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/ShowGrade" element={<ShowGrade />} />
         <Route path="/Admin" element ={<AdminPage/>}></Route>
+        <Route path="/Admin/Classes" element ={<AdminPageClass/>}></Route>
+
+        
         <Route
           path="/ClassDetail"
           element={
