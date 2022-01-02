@@ -55,18 +55,18 @@ export const Grade = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [homework, setHomeWork] = useState([]);
-  const [student, setStudent] = useState([]);
+  const [homework, setHomeWork] = useState([]);// Export Data
+  const [student, setStudent] = useState([]);// Export Data
   const [oldStudent, setOldStudent] = useState([]);
   const [teacher, setTeacher] = useState(false);
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
 
-  const [grades, setGrades] = useState([]);
+  const [grades, setGrades] = useState([]);// Export Data
   const [newData, setNewData] = useState([]);
   const [Dialog, setDialog] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  console.log(grades)
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,7 +79,9 @@ export const Grade = () => {
   const downloadStudentGradeTemplate = () => {
     FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), "StudentGrade.xlsx");
   };
-
+  //LONG-TP 2022-01-01 ADD START
+  const dataExport = ()=> ({homework,grades,student})
+  //LONG-TP 2022-01-01 ADD END
   useEffect(() => {
     GetGrade();
     return () => {
@@ -242,7 +244,12 @@ export const Grade = () => {
           homework={homework[count]}
         />
       )}
-      <StructureButton onClick={saveGrade} disabled={loading} />
+      {/*LONG TP - MOD START 2022/01/02
+        <StructureButton onClick={saveGrade} disabled={loading} />
+      */}
+      <StructureButton dataExport = {dataExport()} onClick={saveGrade} disabled={loading}  />
+      {/*LONG TP - MOD END 2022/01/02*/}
+      {/*homework */}
       <input
         class="displayNone"
         id="upload"
