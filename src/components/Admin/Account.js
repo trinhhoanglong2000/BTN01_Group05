@@ -162,7 +162,7 @@ export const AdminPage = () => {
       const tmp = accounts.data.map((value) => {
         return { ...value, dob: value.dob==null? null:moment(value.dob).format("DD/MM/YYYY") };
       });
-      console.log(accounts.data);
+      
       setTableData(tmp);
     }
   };

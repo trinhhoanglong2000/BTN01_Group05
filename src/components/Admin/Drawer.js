@@ -19,7 +19,14 @@ const drawerWidth = 200;
 
 export const DrawerAdmin = () => {
   const navigate = useNavigate();
-  const goHome = () => {};
+  const classes = () => {
+    navigate("/Admin/Classes");
+
+  };
+  const account = ()=>{
+    navigate("/Admin");
+
+  }
   const signout = () => {
     localStorage.clear();
     navigate("/login");
@@ -28,12 +35,12 @@ export const DrawerAdmin = () => {
   const options = [
     {
       text: "Accounts",
-      onClick: goHome,
+      onClick: account,
       icon: <GroupIcon />,
     },
     {
       text: "Classes",
-      onClick: goHome,
+      onClick: classes,
       icon: <SchoolIcon />,
     },
   ];

@@ -12,4 +12,6 @@ export {ShowGrade} from './ShowGrade/ShowGrade'
 export {GradeStructure} from './ClassDetail/GradeStructure/GradeStructure'
 export {Grade} from './ClassDetail/Grade/Grade'
 export {StudentGrade} from './ClassDetail/StudentGrade/StudentGrade'
-export {AdminPage} from './Admin/index'
+export {AdminPage} from './Admin/Account'
+export {AdminPageClass} from './Admin/Classes'
+

@@ -9,7 +9,9 @@ import {
   getAllGradeFromClass,
   UpdateGrades,
 } from "../../../api";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StructureButton from "./StructureButton/StructureButton";
+import FactCheckIcon from '@mui/icons-material/FactCheck';
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,10 +30,17 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
-
+import UnpublishedIcon from '@mui/icons-material/Unpublished';
+import {postMakeDoneHomeWork, postInProcessHomeWork} from "../../../api"
 import XLSX from "xlsx";
 import * as TemplateXML from "../../../FileTemplate";
-
+import { da } from "date-fns/locale";
+ /*Long-TP ADD START 2022/1/3*/
+const publishIcon = {
+  height: '10px',
+  width: '10px',
+};
+ /*Long-TP ADD END 2022/1/3*/
 var FileSaver = require("file-saver");
 var wb = XLSX.utils.book_new();
 wb.Props = {
@@ -55,14 +64,14 @@ export const Grade = () => {
   const params = useParams();
   const [auth, setAuth] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [homework, setHomeWork] = useState([]);
-  const [student, setStudent] = useState([]);
+  const [homework, setHomeWork] = useState([]);// Export Data
+  const [student, setStudent] = useState([]);// Export Data
   const [oldStudent, setOldStudent] = useState([]);
   const [teacher, setTeacher] = useState(false);
   const [openUpdate, setOpenUpdate] = useState([]);
   const [count, setCount] = useState(null);
 
-  const [grades, setGrades] = useState([]);
+  const [grades, setGrades] = useState([]);// Export Data
   const [newData, setNewData] = useState([]);
   const [Dialog, setDialog] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -79,7 +88,9 @@ export const Grade = () => {
   const downloadStudentGradeTemplate = () => {
     FileSaver.saveAs(TemplateXML.StudentGradeTemplate(), "StudentGrade.xlsx");
   };
-
+  //LONG-TP 2022-01-01 ADD START
+  const dataExport = ()=> ({homework,grades,student})
+  //LONG-TP 2022-01-01 ADD END
   useEffect(() => {
     GetGrade();
     return () => {
@@ -180,7 +191,21 @@ export const Grade = () => {
     document.getElementById("uploadGrade").click();
     document.getElementById("uploadGrade").value = "";
   };
+   /*Long-TP ADD START 2022/1/3*/
+  const makeDone = async (event) => {
+    let targetElement = event.currentTarget;
+    let homeworkID = targetElement.getAttribute("value")
+    let data = await postMakeDoneHomeWork(homeworkID);
+    GetGrade();
+  };
+  const inProcessPost = async (event) => {
 
+    let targetElement = event.currentTarget;
+    let homeworkID = targetElement.getAttribute("value")
+    let data = await postInProcessHomeWork(homeworkID);
+    GetGrade();
+  };
+   /*Long-TP ADD END 2022/1/3*/
   const getData = async (file) => {
     let promiseData = await TemplateXML.readExcel(file);
 
@@ -242,7 +267,12 @@ export const Grade = () => {
           homework={homework[count]}
         />
       )}
-      <StructureButton onClick={saveGrade} disabled={loading} />
+      {/*LONG TP - MOD START 2022/01/02
+        <StructureButton onClick={saveGrade} disabled={loading} />
+      */}
+      <StructureButton dataExport = {dataExport()} onClick={saveGrade} disabled={loading}  />
+      {/*LONG TP - MOD END 2022/01/02*/}
+      {/*homework */}
       <input
         class="displayNone"
         id="upload"
@@ -285,6 +315,7 @@ export const Grade = () => {
                 Total Score
               </TableCell>
               {homework.map((value, index) => (
+              
                 <TableCell
                   key={value.id}
                   onMouseOver={() => {
@@ -320,6 +351,10 @@ export const Grade = () => {
                       }}
                     >
                       {value.name}
+                      {/*Long-TP ADD START 2022/1/3*/}
+                      {value.isdone && ( <CheckCircleIcon style={publishIcon}/> )}
+                      {/*Long-TP ADD END 2022/1/3*/}
+                      
                     </Typography>
                     {openUpdate && index === count && (
                       <>
@@ -356,6 +391,22 @@ export const Grade = () => {
                             <FileDownloadIcon />
                             Download
                           </MenuItem>
+                          { /*Long-TP ADD START 2022/1/3*/}
+                          <MenuItem
+                            value={value.id}
+                            onClick={makeDone}
+                          >
+                            <FactCheckIcon />
+                            publish
+                          </MenuItem>
+                          <MenuItem
+                            value={value.id}
+                            onClick={inProcessPost}
+                          >
+                            <UnpublishedIcon />
+                            Un-publish
+                          </MenuItem>
+                          { /*Long-TP ADD END 2022/1/3*/} 
                         </Menu>
                       </>
                     )}
