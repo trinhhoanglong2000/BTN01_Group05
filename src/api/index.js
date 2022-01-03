@@ -539,3 +539,45 @@ export const postHomeWordGrade = async (homeworkData, classId, homeworkId) => {
   if (message != null) return message;
   return test.data;
 };
+/*Long-TP ADD START 2022/1/3*/
+export const postMakeDoneHomeWork = async (homeworkId) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/MakeDone`,
+      {
+        homeWorkID: homeworkId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const postInProcessHomeWork = async (homeworkId) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/InProcess`,
+      {
+        homeWorkID: homeworkId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+{ /*Long-TP ADD END 2022/1/3*/}
