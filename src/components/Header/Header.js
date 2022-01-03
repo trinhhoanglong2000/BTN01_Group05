@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,19 +19,23 @@ import { default as Drawer } from "../Drawer/Drawer";
 
 import { getAccount } from "../../api";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { io } from "socket.io-client"
+import { Context } from '../../Context/context'
 
 import { default as ManageAccount } from "./Dialog/ManageAccount";
 import SimpleBadge from "./Badge/Badge";
 import ColorToggleButton from "./ToggleButton/ToggleButton";
 export default function Header() {
   const params = useParams();
-
+  const context = useContext(Context)
   const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [auth, setAuth] = useState(true);
   const [account, setAccount] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
+
+  //Socket 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,6 +44,7 @@ export default function Header() {
   };
   const signout = () => {
     localStorage.clear();
+    context.socket?.emit("removeUser")
     navigate("/login");
   };
   const editprofile = () => {
@@ -55,9 +60,14 @@ export default function Header() {
       console.log(error);
     }
     if (data.success) {
+      console.log(data.data[0])
       setAccount(data.data[0]);
+      
+      context.socket?.emit("newUser", data.data[0].id)
     } else {
       if (data.message === "jwt expired") localStorage.clear();
+      context.socket?.emit("removeUser")
+
       setAuth(false);
     }
   };
@@ -101,7 +111,19 @@ export default function Header() {
                 }}
               />
             )}
-            <div style ={{width:75}}>
+            {params.id == undefined && (
+              <Box
+                sx={{
+                  margin: "0px auto;",
+                  "@media (max-width: 670px)": {
+                    alignItems: 'flex-end',
+                    height: '150px'
+
+                  },
+                }}
+              />
+            )}
+            <div style={{ width: 120 }}>
               <SimpleBadge sx={{
                 ml: 2,
                 mr: 2,

@@ -1,16 +1,18 @@
-import React, { createContext,useState,useContext } from "react";
+import React, { createContext, useState, useContext } from "react";
 
-const Context = createContext();
+export const Context = createContext();
 
-function UseContext() {
-  const context =useContext(Context);
-  return context;
-}
+// export function UseContext() {
+//   const context = useContext(Context);
+//   return context;
+// }
 
 export function ContextProvider({ children }) {
   const [username, setUsername] = useState("");
-  const [id,setId] = useState("");
-  const value = { username,setUsername,id,setId};
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  const [id, setId] = useState("");
+  const [socket, setSocket] = useState(null)
+  const value = { username, setUsername, id, setId, socket, setSocket};
+
+  return <Context.Provider value={value} >{children}</Context.Provider>;
 }
-export default UseContext;
+//export default UseContext;

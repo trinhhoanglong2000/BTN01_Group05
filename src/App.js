@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Header,
   ClassesContent,
@@ -15,10 +15,20 @@ import {
 
 } from "./components";
 
-import { BrowserRouter as Router, Routes, Route,Outlet  } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import SubHeader from "./components/ClassDetail/SubHeader/SubHeader";
 import AccessLink from "./components/AcessLink";
+import { io } from "socket.io-client"
+import { Context } from './Context/context'
 function App() {
+  const context = useContext(Context)
+  useEffect( async ()  => {
+  
+    await context?.setSocket(io(process.env.REACT_APP_API_URL))
+    
+    ////
+  }, [])
+
   return (
     <Router>
       <Routes>
@@ -34,14 +44,14 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/ShowGrade" element={<ShowGrade />} />
-        <Route path="/Admin" element ={<AdminPage/>}></Route>
+        <Route path="/Admin" element={<AdminPage />}></Route>
         <Route
           path="/ClassDetail"
           element={
             <>
               <Header />
               <SubHeader />
-              <Outlet/>
+              <Outlet />
             </>
           }
         >

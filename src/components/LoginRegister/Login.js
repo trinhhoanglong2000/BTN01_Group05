@@ -1,5 +1,5 @@
 // import FacebookLogin from "react-facebook-login";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { Link } from "react-router-dom";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
@@ -15,6 +15,8 @@ import Alert from "@mui/material/Alert";
 import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate, Navigate } from "react-router-dom";
 import GoogleLogin from "react-google-login";
+
+
 //api
 import { Login as LoginAccount } from "../../api";
 function Login() {
@@ -23,7 +25,7 @@ function Login() {
   const [err, setErr] = useState(false);
   const [errmessage, setErrmessage] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   const [input, setInput] = useState({
     email: "",
     password: "",
@@ -74,6 +76,9 @@ function Login() {
     if (data.success) {
       setHeight(520);
       setErr(false);
+      //
+      
+      //context.socket.emit("newUser", )
       localStorage.setItem("token", data.token);
 
       navigate("/", { replace: true });
@@ -93,6 +98,7 @@ function Login() {
     if (result.success) {
       setHeight(520);
       setErr(false);
+      
       localStorage.setItem("token", result.token);
 
       navigate("/", { replace: true });
