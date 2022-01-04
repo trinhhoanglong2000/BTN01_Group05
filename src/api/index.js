@@ -78,11 +78,11 @@ export const adminUpdateAccount = async (
         admin: admin,
         dob: dob,
         student_id: studentid,
-        phone:phone,
-        email:email,
+        phone: phone,
+        email: email,
         id: id,
-        gender:gender,
-        isban:isban,
+        gender: gender,
+        isban: isban,
       },
       {
         headers: {
@@ -155,9 +155,9 @@ export const adminUpdateClass = async (
         subject: subject,
         room: room,
         section: section,
-        
+
         id: id,
-       
+
       },
       {
         headers: {
@@ -500,11 +500,32 @@ export const addStructure = async (idclass, description, grade) => {
 export const removeStructure = async (id) => {
   let message = null;
   const test = await axios
-    .post(`${URL}/GradeStructure/RemoveStructure`,{id:id},{
+    .post(`${URL}/GradeStructure/RemoveStructure`, { id: id }, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+export const updateStructure = async (id,submit) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/GradeStructure/UpdateStructure`, {
+         id: id,
+         description: submit.description,
+         grade: submit.grade
+         },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
     .catch((error) => {
       message = error.response.data;
     });
@@ -596,4 +617,4 @@ export const postInProcessHomeWork = async (homeworkId) => {
   if (message != null) return message;
   return test.data;
 };
-{ /*Long-TP ADD END 2022/1/3*/}
+{ /*Long-TP ADD END 2022/1/3*/ }

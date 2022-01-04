@@ -10,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { removeStructure } from "../../../../api"
 import { SortableElement, sortableHandle } from 'react-sortable-hoc'
+import {UpdateDialog} from '../UpdateDialog/UpdateDialog'
 const DataElement = SortableElement(({ data, homework, index, setData, fullData }) => {
     const DragHandle = sortableHandle(() => <span>::</span>);
     const [count, setCount] = useState(0);
@@ -98,6 +99,7 @@ const DataElement = SortableElement(({ data, homework, index, setData, fullData 
                     </Menu>
                 </Grid>
             </Grid>
+            <UpdateDialog originalData ={data} data ={fullData} set ={setData} open ={ openDialog} setOpen = {setOpenDialog}/>
         </div >
     )
 })
