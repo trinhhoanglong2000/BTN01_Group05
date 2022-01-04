@@ -496,6 +496,22 @@ export const addStructure = async (idclass, description, grade) => {
   if (message != null) return message;
   return test.data;
 };
+
+export const removeStructure = async (id) => {
+  let message = null;
+  const test = await axios
+    .post(`${URL}/GradeStructure/RemoveStructure`,{id:id},{
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+// 
 export const postListStudent = async (listStudentData, classId) => {
   let message = null;
   const test = await axios
