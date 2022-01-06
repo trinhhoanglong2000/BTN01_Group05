@@ -10,7 +10,7 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import Button from "@mui/material/Button";
 import { height } from '@mui/system';
 import Review from '../Review'
-import { getGradeStructure } from "../../../../api";
+import { getGradeStructure,getReviewGrade } from "../../../../api";
 import { el } from "date-fns/locale";
 export default function GradeTable({data}) {
   const getData = async () =>{
@@ -20,18 +20,28 @@ export default function GradeTable({data}) {
         setGradeStruct(dataRes)
       })
     }
+    
   }
   const OpenReview = async (e) => {
-    
-    await getData().then(()=>{
+    await getData().then(async ()=>{
       let index = e.target.getAttribute("index")
       setassignmentData(data[index])
-      setOpenDialog(true)
+      if(data[index]!=null){
+        await getReviewGrade(data[index].idhomework,data[index].idaccount).then(resReview => 
+          {
+            setReviewData(resReview.data)
+            setOpenDialog(true)
+      })
+      }
     })
+    
+    
   }
+
   const [gradeStruct, setGradeStruct] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [assignmentData, setassignmentData] = useState(null)
+  const [reviewData, setReviewData] = useState(null);
    
   return (
     <div>
@@ -83,7 +93,7 @@ export default function GradeTable({data}) {
         </TableBody>
       </Table>
     </TableContainer>
-    <Review data={assignmentData} openDialog = {openDialog} gradeStruct = {gradeStruct} setOpenDialog = {setOpenDialog} />
+    <Review data={assignmentData} openDialog = {openDialog} gradeStruct = {gradeStruct} setOpenDialog = {setOpenDialog} reviewData = {reviewData} />
     </div>
   );
 }

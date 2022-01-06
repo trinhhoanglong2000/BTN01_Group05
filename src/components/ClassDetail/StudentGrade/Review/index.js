@@ -21,14 +21,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import moment from "moment";
 import LinearProgress from "@mui/material/LinearProgress";
-import { createHomeWork, UpdateHomeWork } from "../../../../api";
+import { createHomeWork, UpdateHomeWork,postReviewRequest,getReviewGrade } from "../../../../api";
 import { useNavigate, useParams } from "react-router-dom";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-export default function ReviewAssignment({data, setOpenDialog, openDialog, gradeStruct
+export default function ReviewAssignment({data, setOpenDialog, openDialog, gradeStruct,reviewData,OpenReview
 }) {
     const getTopic = () => {
         if(gradeStruct && data)
@@ -36,7 +36,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
         else 
             return null
     }
-    console.log(data)
+    console.log(reviewData)
     const idhomework = data!= null ? data.idhomework: null;
     const idaccount = data!= null ? data.idaccount: null;
 
@@ -44,24 +44,25 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
     const dueDate = data!= null ? data.endday: null;
     const description = data!= null ? data.description: null;
     const grade = data!= null ? data.grade: null;
-    const [expectationGrade, SetExpectationGrade ] = useState(grade);
-    const [finalGrade, SetFinalGrade ] = useState(null);
-    const createDate = null;
-    const comfirmDate = null;
-    const [expectationMess, SetExpectationMess ] = useState("");
-    const [teacherMess, SetTeacherMess] = useState(null)
+    const [expectationGrade, SetExpectationGrade ] = useState(reviewData!=null  ? (reviewData.expectationgrade!= null ? reviewData.expectationgrade: null) : null);
+    const [finalGrade, SetFinalGrade ] = useState(reviewData!=null ? (reviewData.finalgrade ? reviewData.finalgrade: null) : null);
+    const [createDate,SetcreateDate] = useState(reviewData!=null ? (reviewData.createdate ? reviewData.createdate: null) : null);
+    const [comfirmDate,SetcomfirmDate] = useState(reviewData!=null ? (reviewData.donedate ? reviewData.donedate: null) : null);
+    const [expectationMess, SetExpectationMess ] = useState(reviewData!=null ? ( reviewData.expectationmess ? reviewData.expectationmess: null) : null);
+    const [teacherMess, SetTeacherMess] = useState(reviewData!=null ? (reviewData.teachermess ? reviewData.teachermess: null) : null)
+
+   
     const handleClose = () => {
         setOpenDialog(false);
-      };
+      }; 
       if(!data){
           handleClose()
       }
-    const handleSend = () => {
-      console.log(expectationGrade);
-      console.log(expectationMess);
-      console.log(idhomework);
-      console.log(idaccount)
+    const handleSend =async () => {
+     
+      await postReviewRequest(idhomework,idaccount,expectationGrade,expectationMess,grade).then(mess => console.log(mess))
     }
+    
   return (
     <div>
       <Dialog
@@ -93,14 +94,23 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
             >
               Assignment review
             </Typography>
-            <Button
+            {!reviewData && (<Button
               onClick={handleSend}
+              
               sx={{ color: "black" }}
               autoFocus
               color="inherit"
-            >
-              Send Review
-            </Button>
+            >Send Review
+            </Button>)}
+            {!!reviewData && (<Button
+              onClick={null}
+              disableFocusRipple
+              sx={{ color: "black" }}
+              autoFocus
+              color="inherit"
+            >WAIT TEACHER REPLY
+            </Button>)}
+              
           </Toolbar>
         </AppBar>
         <div className="assignment-info-place"> 
@@ -243,8 +253,9 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   label= "Expectation grade "
                   type={"number"}
                   value={expectationGrade}
+                  disabled = {!!reviewData}
                   onInput={(e) => SetExpectationGrade(e.target.value)}
-            
+                  defaultValue={reviewData!=null  ? (reviewData.expectationgrade!= null ? reviewData.expectationgrade: null) : null}
                   rows={1}
                   variant="filled"
                   inputProps={{
@@ -253,7 +264,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
 
                 />
-                <PublishedWithChangesIcon
+                     {!reviewData &&(<PublishedWithChangesIcon
                   sx={{
                     color: "action.active",
                     mr: 1,
@@ -262,7 +273,9 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                     marginLeft: "50px",
                     
                   }}
-                />
+                />)}
+                {!reviewData &&(
+                
                 <TextField
                   sx={{
                     
@@ -270,10 +283,10 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   disabled
                   name="Final grade "
                   label= "Final grade "
-                  defaultValue={grade}
                   type={"number"}
                   value={finalGrade}
                   onInput={(e) => SetFinalGrade(e.target.value)}
+                  defaultValue = {reviewData!=null ? (reviewData.finalgrade ? reviewData.finalgrade: null) : null}
             
                   rows={1}
                   variant="filled"
@@ -282,7 +295,8 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   }} // font size of input text
                   InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
 
-                />
+                />)}
+           
                 { createDate &&
                 (<CalendarTodayIcon sx={{
                     color: "action.active",
@@ -295,7 +309,8 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   <MobileDateTimePicker
                     label = "Create At"
                     name = "LastSend"
-                    value = {comfirmDate}
+                    value = {createDate}
+                    defaultValue={reviewData!=null ? (reviewData.createdate ? reviewData.createdate: null) : null}
                     disabled
                     renderInput={({ inputRef, inputProps, InputProps }) => (
                       <TextField
@@ -352,6 +367,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                         label = "Confirm At"
                         disabled
                         value={comfirmDate}
+                        defaultValue={reviewData!=null ? (reviewData.donedate ? reviewData.donedate: null) : null}
                         inputProps={inputProps}
                         InputProps={InputProps}
                         inputRef={inputRef}
@@ -383,6 +399,8 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   name = "Explanation message"
                   multiline
                   value={expectationMess}
+                  disabled={!!reviewData}
+                  defaultValue={reviewData!=null ? ( reviewData.expectationmess ? reviewData.expectationmess: null) : null}
                   onInput={(e) => SetExpectationMess(e.target.value)}
                   rows={5}
                   variant="filled"
@@ -418,6 +436,8 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   multiline
                   value={teacherMess}
                   onInput={(e) => SetTeacherMess(e.target.value)}
+                  defaultValue={reviewData!=null ? (reviewData.teachermess ? reviewData.teachermess: null) : null}
+                  disabled={!!reviewData}
                   rows={5}
                   variant="filled"
                   inputProps={{
