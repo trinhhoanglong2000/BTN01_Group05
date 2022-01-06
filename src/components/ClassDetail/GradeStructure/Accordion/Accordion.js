@@ -46,7 +46,7 @@ export default function ControlledAccordions({ data, homework }) {
           {homework
             .filter((element) => element.idgradestructure === data.id)
             .map((value, index) => (
-              <Typography variant="caption">{value.name}</Typography>
+              <Typography key ={index} variant="caption">{value.name}</Typography>
             ))}
         </AccordionDetails>
 

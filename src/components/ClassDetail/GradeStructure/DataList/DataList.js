@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Container } from "@mui/material";
 import DataElement from './DataElement'
 import { SortableContainer } from 'react-sortable-hoc'
-const DataList = SortableContainer(({ data, homework }) => {
+const DataList = SortableContainer(({ data, homework, setData }) => {
    
     return (
         <Container sx={{ width: "60vw" }}>
@@ -10,7 +10,7 @@ const DataList = SortableContainer(({ data, homework }) => {
 
                 return (
                     
-                        <DataElement key={key} data = {item} homework = {homework} index = {key} /> 
+                        <DataElement key={key} data = {item} homework = {homework} index = {key} setData = {setData} fullData = {data}/> 
                 );
             })}
         </Container>

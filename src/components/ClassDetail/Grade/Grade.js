@@ -248,7 +248,7 @@ export const Grade = () => {
         <LinearProgress sx={{ position: "fixed", top: 64, width: "100vw" }} />
       )}
       <input
-        class="displayNone"
+        className="displayNone"
         id="uploadGrade"
         type="file"
         onChange={(e) => {
@@ -274,7 +274,7 @@ export const Grade = () => {
       {/*LONG TP - MOD END 2022/01/02*/}
       {/*homework */}
       <input
-        class="displayNone"
+        className="displayNone"
         id="upload"
         type="file"
         onChange={(e) => {
