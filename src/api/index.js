@@ -617,4 +617,54 @@ export const postInProcessHomeWork = async (homeworkId) => {
   if (message != null) return message;
   return test.data;
 };
-{ /*Long-TP ADD END 2022/1/3*/ }
+export const postReviewRequest = async (homeworkId,idaccount,expectationGrade,expectationMess,grade) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/ReviewRequest`,
+      {
+        homeWorkID: homeworkId,
+        idaccount: idaccount,
+        expectationGrade: expectationGrade,
+        expectationMess: expectationMess,
+        oldGrade: grade
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
+
+export const getReviewGrade = async (homeWorkID,idaccount) => {
+  let data = null;
+  try{
+
+ 
+  await axios
+
+    .get(`${URL}/HomeWork/GetReviewGrade?homeWorkID=${homeWorkID}&idaccount=${idaccount}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+  }
+  catch(err){
+    console.log(err)
+  }
+  return data;
+};
+{ /*Long-TP ADD END 2022/1/3*/}
+
