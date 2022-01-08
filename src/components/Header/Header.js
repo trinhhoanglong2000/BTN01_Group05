@@ -60,7 +60,7 @@ export default function Header() {
       console.log(error);
     }
     if (data.success) {
-      console.log(data.data[0])
+      //console.log(data.data[0])
       setAccount(data.data[0]);
       
       context.socket?.emit("newUser", data.data[0].id)
@@ -124,7 +124,7 @@ export default function Header() {
               />
             )}
             <div style={{ width: 120 }}>
-              <SimpleBadge sx={{
+              <SimpleBadge socket = {context.socket} sx={{
                 ml: 2,
                 mr: 2,
                 position: "absolute",

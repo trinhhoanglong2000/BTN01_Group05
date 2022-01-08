@@ -1,39 +1,22 @@
-import * as React from 'react';
+import React, { useEffect, useState, useContext } from "react";
 import Badge from '@mui/material/Badge';
 import MailIcon from '@mui/icons-material/Mail';
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import Divider from "@mui/material/Divider";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Avatar from "@mui/material/Avatar";
-export default function SimpleBadge() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export default function SimpleBadge(socket) {
+  const [notifications, setNotifications] = useState([]);
+  React.useEffect(() => {
+    socket.socket?.on("getNotification", data => {
+      console.log("Hi")
+      setNotifications(prev => [...prev, data])
+    })
+  }, [socket.socket])
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const options = [
-    'None',
-    'Atria',
-    'Callisto',
-    'Dione',
-    'Ganymede',
-    'Hangouts Call',
-    'Luna',
-    'Oberon',
-    'Phobos',
-    'Pyxis',
-    'Sedna',
-    'Titania',
-    'Triton',
-    'Umbriel',
-  ];
-  
+
   const ITEM_HEIGHT = 80;
-  
+
   //============================ Component Function
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +30,7 @@ export default function SimpleBadge() {
   //========================== return
   return (
     <div>
-      <Badge badgeContent={4} color="primary">
+      <Badge badgeContent={notifications.length} color="primary">
         <IconButton
           onClick={handleClick}
         >
@@ -64,7 +47,7 @@ export default function SimpleBadge() {
         open={open}
         onClose={handleClose}
         PaperProps={{
-          
+
         }}
         PaperProps={{
           style: {
@@ -72,43 +55,43 @@ export default function SimpleBadge() {
             width: '50ch',
           },
           elevation: 0,
-                sx: {
-                  
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                  mt: 1.5,
-                  "& .MuiAvatar-root": {
-                    width: 64,
-                    height: 64,
-                    ml: -0.5,
-                    mr: 1,
-                  },
-                  "& .Mui-disabled": {
-                    opacity: "1!important",
-                  },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
-                },
+          sx: {
+
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 64,
+              height: 64,
+              ml: -0.5,
+              mr: 1,
+            },
+            "& .Mui-disabled": {
+              opacity: "1!important",
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
+        {notifications.map((data,key) => (
+          <MenuItem key={key} onClick={handleClose}>
+            {data.message}
           </MenuItem>
         ))}
       </Menu>
-      
+
     </div>
   );
 }
