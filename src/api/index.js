@@ -604,6 +604,29 @@ export const postReviewRequest = async (homeworkId,idaccount,expectationGrade,ex
   if (message != null) return message;
   return test.data;
 };
+export const postReviewResponse= async (homeworkId,idaccount,finalgrade,teachermess) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/ReviewResponse`,
+      {
+        homeWorkID: homeworkId,
+        idaccount: idaccount,
+        finalgrade: finalgrade,
+        teachermess: teachermess,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
 
 export const getReviewGrade = async (homeWorkID,idaccount) => {
   let data = null;
@@ -629,4 +652,26 @@ export const getReviewGrade = async (homeWorkID,idaccount) => {
   }
   return data;
 };
+export const GetAllReviewRequest = async (idclass) => {
+  let data = null;
+  try{
+  await axios
+    .get(`${URL}/HomeWork/GetAllReviewRequest?idclass=${idclass}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+  }
+  catch(err){
+    console.log(err)
+  }
+  return data;
+};
+
 { /*Long-TP ADD END 2022/1/3*/}
