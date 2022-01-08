@@ -80,7 +80,7 @@ export const People = () => {
 
       <Container sx={{ width: "80vw" }}>
         <input
-          class="displayNone"
+          className="displayNone"
           id="upload"
           type="file"
           onChange={(e) => {

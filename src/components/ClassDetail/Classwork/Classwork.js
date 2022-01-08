@@ -10,7 +10,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { Divider } from "@mui/material";
 import CreateAssignment from "./Dialog/CreateAssignment";
 
-import { getGradeStructure, getHomeWorks, CheckTeacher,RemoveHomeWork } from "../../../api";
+import { getGradeStructure, getHomeWorks, CheckTeacher, RemoveHomeWork } from "../../../api";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Accordion from "@mui/material/Accordion";
@@ -29,8 +29,8 @@ export const Classwork = () => {
   const [auth, setAuth] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [topic, setTopic] = useState(["All Topics"]);
-  const [Update,setUpdate] = useState(false)
-  const [Upload,setUpload] = useState(false) 
+  const [Update, setUpdate] = useState(false)
+  const [Upload, setUpload] = useState(false)
   const [gradeStuct, setGradeStruct] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alignment, setAlignment] = React.useState("ios");
@@ -65,25 +65,25 @@ export const Classwork = () => {
     setOpenDialog(true);
 
   };
-  const upload = (event) =>{
+  const upload = (event) => {
     document.getElementById("upload").click()
     document.getElementById("upload").value = "";
   }
   const Delete = async (event) => {
-    
-    
+
+
     let result = {};
     try {
-      result= await RemoveHomeWork({id:homework[count].id})
+      result = await RemoveHomeWork({ id: homework[count].id })
     } catch (error) {
 
     }
     if (result.success) {
       const Clone = homework.slice();
-      const newValue = Clone.filter((ele)=>ele.id!==homework[count].id)
+      const newValue = Clone.filter((ele) => ele.id !== homework[count].id)
       setHomeWork(newValue)
     } else {
-      
+
     }
 
     setAnchorEl(null);
@@ -120,7 +120,7 @@ export const Classwork = () => {
   };
   return (
     <div>
-      
+
       {!auth && <Navigate to="/login" />}
       {openDialog && (
         <CreateAssignment
@@ -143,14 +143,14 @@ export const Classwork = () => {
           sx={{ width: "71%", marginTop: "5px", marginBottom: "10px" }}
         >
           <input
-        class = "displayNone"
-        id = "upload"
-        type="file"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          TemplateXML.readExcel(file);
-        }}
-      />
+            className="displayNone"
+            id="upload"
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              TemplateXML.readExcel(file);
+            }}
+          />
           <Button
             onClick={handleCreateAssignment}
             sx={{
@@ -216,7 +216,7 @@ export const Classwork = () => {
                     </AccordionDetails>
                   </Accordion>
                   {/*  */}
-                  <IconButton
+                  {teacher && <IconButton IconButton
                     aria-label="more"
                     aria-controls="long-menu"
                     aria-expanded={open ? "true" : undefined}
@@ -225,7 +225,7 @@ export const Classwork = () => {
                     value={index}
                   >
                     <MoreVertIcon />
-                  </IconButton>
+                  </IconButton>}
                   <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -262,6 +262,6 @@ export const Classwork = () => {
           </Grid>
         </Grid>
       </Container>
-    </div>
+    </div >
   );
 };
