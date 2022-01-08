@@ -44,6 +44,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
     const dueDate = data!= null ? data.endday: null;
     const description = data!= null ? data.description: null;
     const grade = reviewData!= null ? reviewData.oldgrade: null;
+    const checkdone = reviewData!=null ? (reviewData.donedate ? reviewData.donedate: null) : null;
     const [expectationGrade, SetExpectationGrade ] = useState(reviewData!=null  ? (reviewData.expectationgrade!= null ? reviewData.expectationgrade: null) : null);
     const [finalGrade, SetFinalGrade ] = useState(reviewData!=null ? (reviewData.finalgrade ? reviewData.finalgrade: null) : null);
     const [createDate,SetcreateDate] = useState(reviewData!=null ? (reviewData.createdate ? reviewData.createdate: null) : null);
@@ -94,7 +95,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
             >
               Assignment review
             </Typography>
-            {comfirmDate && (<Button
+            {!checkdone && (<Button
               onClick={handleSend}
               
               sx={{ color: "black" }}
@@ -257,7 +258,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
 
                 />
-                     {!comfirmDate &&(<PublishedWithChangesIcon
+                    <PublishedWithChangesIcon
                   sx={{
                     color: "action.active",
                     mr: 1,
@@ -266,14 +267,14 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                     marginLeft: "50px",
                     
                   }}
-                />)}
-                {!comfirmDate &&(
+                />
+                
                 
                 <TextField
                   sx={{
                     
                   }}
-                  disabled = {!comfirmDate}
+                  disabled = {checkdone}
                   name="Final grade "
                   label= "Final grade "
                   type={"number"}
@@ -288,7 +289,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                   }} // font size of input text
                   InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
 
-                />)}
+                />
            
                
                 <CalendarTodayIcon sx={{
@@ -318,14 +319,14 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                     )}
                   />
                 </LocalizationProvider>
-                {!comfirmDate &&(<EventAvailableIcon sx={{
+                {checkdone &&(<EventAvailableIcon sx={{
                     color: "action.active",
                     mr: 1,
                     my: 0.5,
                     alignSelf: "flex-start",
                     marginLeft: "50px",
                   }}/>)}
-                {!comfirmDate && (<LocalizationProvider dateAdapter={AdapterDateFns}>
+                {checkdone && (<LocalizationProvider dateAdapter={AdapterDateFns}>
                   <MobileDateTimePicker
                     disabled
                     defaultValue={reviewData!=null ? (reviewData.donedate ? reviewData.donedate: null) : null}
@@ -400,7 +401,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                 <TextField
                   label="Teacher message"
                   name = "Explanation message"
-                  disabled = {!comfirmDate}
+                  disabled = {checkdone}
                   multiline
                   value={teacherMess}
                   onInput={(e) => SetTeacherMess(e.target.value)}
