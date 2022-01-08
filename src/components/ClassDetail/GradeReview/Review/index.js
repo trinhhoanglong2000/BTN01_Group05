@@ -25,6 +25,7 @@ import { createHomeWork, UpdateHomeWork,postReviewResponse,getReviewGrade } from
 import { useNavigate, useParams } from "react-router-dom";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import Comment from "../../Comment";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -417,38 +418,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                 />
               </Box>  
             </Container>
-            <div className="review-place">
-            <Container>
-            <Typography sx={{fontWeight: 'bolder', fontSize: '20px'}}>Comment</Typography>
-            <Box sx={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  marginTop: "20px",
-                  marginBottom: '20px'
-                }}>
-            <MessageIcon
-                  sx={{
-                    color: "action.active",
-                    mr: 1,
-                    my: 0.5,
-                    alignSelf: "flex-start",
-                  }}
-                />
-                <TextField
-                  label="New message"
-                  name = "New message"
-                  multiline
-                  rows={3}
-                  variant="filled"
-                  inputProps={{
-                    style: { fontSize: 16 },
-                  }} // font size of input text
-                  InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
-                  fullWidth
-                />
-            </Box>
-            </Container>
-            </div>
+            <Comment idhomework = { data!= null ? data.idhomework: null} idaccount = {data!= null ? data.idaccount: null} isteacher = {true}></Comment>
           </Grid>
         </Grid>
         </div>

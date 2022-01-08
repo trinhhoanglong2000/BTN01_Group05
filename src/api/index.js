@@ -711,6 +711,53 @@ export const GetAllReviewRequest = async (idclass) => {
   }
   return data;
 };
+export const GetReviewComment = async (homeWorkID,idaccount) => {
+  let data = null;
+  try{
 
+ 
+  await axios
+
+    .get(`${URL}/HomeWork/GetReviewComment?homeWorkID=${homeWorkID}&idaccount=${idaccount}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((res) => {
+      data = res.data;
+    })
+    .catch((error) => {
+      data = error.response.data;
+    });
+  }
+  catch(err){
+    console.log(err)
+  }
+  return data;
+};
+
+export const AddReviewComment= async (homeWorkID,idaccount,content,isteacher) => {
+  let message = null;
+  const test = await axios
+    .post(
+      `${URL}/homeWork/AddReviewComment`,
+      {
+        homeWorkID: homeWorkID,
+        idaccount: idaccount,
+        content: content,
+        isteacher: isteacher,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+    .catch((error) => {
+      message = error.response.data;
+    });
+  if (message != null) return message;
+  return test.data;
+};
 { /*Long-TP ADD END 2022/1/3*/}
 

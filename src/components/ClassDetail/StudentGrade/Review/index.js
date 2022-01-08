@@ -20,6 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import moment from "moment";
+import Comment from "../../Comment";
 import LinearProgress from "@mui/material/LinearProgress";
 import { createHomeWork, UpdateHomeWork,postReviewRequest,getReviewGrade } from "../../../../api";
 import { useNavigate, useParams } from "react-router-dom";
@@ -448,38 +449,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
                 />
               </Box>  )}
             </Container>
-            <div className="review-place">
-            <Container>
-            <Typography sx={{fontWeight: 'bolder', fontSize: '20px'}}>Comment</Typography>
-            <Box sx={{
-                  display: "flex",
-                  alignItems: "flex-end",
-                  marginTop: "20px",
-                  marginBottom: '20px'
-                }}>
-            <MessageIcon
-                  sx={{
-                    color: "action.active",
-                    mr: 1,
-                    my: 0.5,
-                    alignSelf: "flex-start",
-                  }}
-                />
-                <TextField
-                  label="New message"
-                  name = "New message"
-                  multiline
-                  rows={3}
-                  variant="filled"
-                  inputProps={{
-                    style: { fontSize: 16 },
-                  }} // font size of input text
-                  InputLabelProps={{ style: { fontSize: 13 } }} // font size of input l
-                  fullWidth
-                />
-            </Box>
-            </Container>
-            </div>
+            <Comment idhomework = { data!= null ? data.idhomework: null} idaccount = {data!= null ? data.idaccount: null} isteacher = {false}></Comment>
           </Grid>
         </Grid>
         </div>
