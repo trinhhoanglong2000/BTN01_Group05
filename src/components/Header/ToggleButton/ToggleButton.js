@@ -98,6 +98,21 @@ export default function ColorToggleButton({ sx }) {
           Grade
         </ToggleButton>
       )}
+      {teacher && (
+        <ToggleButton
+          value="GradeReview"
+          onClick={handleClick}
+          sx={{
+            color: "black",
+            border: "none",
+            fontSize: "0.7rem",
+            textTransform: "none",
+          }}
+        >
+          {" "}
+          Request Review
+        </ToggleButton>
+      )}
        {!teacher && (
         <ToggleButton
           value="StudentGrade"

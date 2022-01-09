@@ -21,6 +21,7 @@ import SubHeader from "./components/ClassDetail/SubHeader/SubHeader";
 import AccessLink from "./components/AcessLink";
 import { io } from "socket.io-client"
 import { Context } from './Context/context'
+import { GradeReview } from "./components/ClassDetail/GradeReview";
 function App() {
   const context = useContext(Context)
   useEffect( async ()  => {
@@ -65,6 +66,7 @@ function App() {
           <Route path="/ClassDetail/:id/GradeStructure" element={<GradeStructure />} />
           <Route path="/ClassDetail/:id/Grade" element={<Grade />} />
           <Route path="/ClassDetail/:id/StudentGrade" element={<StudentGrade />} />
+          <Route path="/ClassDetail/:id/GradeReview" element={<GradeReview />} />
 
         </Route>
         <Route
