@@ -12,6 +12,7 @@ import { height } from '@mui/system';
 import Review from '../Review'
 import { getGradeStructure,getReviewGrade } from "../../../../api";
 import { el } from "date-fns/locale";
+import moment from "moment"
 export default function GradeTable({data}) {
   const getData = async () =>{
     if(gradeStruct== null && data!=null){
@@ -63,7 +64,7 @@ export default function GradeTable({data}) {
                     position: 'relative',
                     
                   }}>
-                {row.createdate}
+                {row.createdate==null? null:moment(row.createdate).format("hh:mm DD/MM/YYYY")}
                 <Button
                   onClick={OpenReview}
                   index = {index}
