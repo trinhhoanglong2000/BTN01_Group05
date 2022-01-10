@@ -87,6 +87,12 @@ export default function Comment({ idhomework, idaccount, isteacher }) {
     }
     setLoading(false);
   };
+  const TittleCmt = (item) => {
+    let teacherCheck = item.isteacher
+    console.log(item)
+    return teacherCheck ==isteacher ? "You" : ( teacherCheck ? "Teacher Reply": "Student Reply"  )
+  }
+
   return (
     <div className="review-place">
       <Container>
@@ -147,7 +153,7 @@ export default function Comment({ idhomework, idaccount, isteacher }) {
               }}
             />
             <TextField
-              label={item.firstname + " " + item.lastname}
+              label={TittleCmt(item)}
               name="New message"
               multiline
               value={item.content}
