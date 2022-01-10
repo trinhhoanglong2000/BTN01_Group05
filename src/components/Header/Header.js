@@ -60,8 +60,12 @@ export default function Header() {
       console.log(error);
     }
     if (data.success) {
-      //console.log(data.data[0])
-      setAccount(data.data[0]);
+      if (data.data[0].admin){
+        navigate("/Admin");
+
+      }
+      console.log(data.data[0])
+      setAccount(data.data[0])
       
       context.socket?.emit("newUser", data.data[0].id)
     } else {
