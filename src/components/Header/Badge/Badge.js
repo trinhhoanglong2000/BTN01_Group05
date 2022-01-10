@@ -8,7 +8,7 @@ export default function SimpleBadge(socket) {
   const [notifications, setNotifications] = useState([]);
   React.useEffect(() => {
     socket.socket?.on("getNotification", data => {
-      console.log("Hi")
+      
       setNotifications(prev => [...prev, data])
     })
   }, [socket.socket])
@@ -25,7 +25,7 @@ export default function SimpleBadge(socket) {
     setAnchorEl(null);
   };
   const editprofile = () => {
-    console.log("Check")
+    
   };
   //========================== return
   return (

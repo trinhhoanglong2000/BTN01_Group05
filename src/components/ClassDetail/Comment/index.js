@@ -67,7 +67,7 @@ export default function Comment({ idhomework, idaccount, isteacher }) {
       setLoading(false);
     };
   }, []);
-  console.log(data)
+  
   const GetTeacherData = async () => {
     setLoading(true);
 
@@ -89,7 +89,7 @@ export default function Comment({ idhomework, idaccount, isteacher }) {
   };
   const TittleCmt = (item) => {
     let teacherCheck = item.isteacher
-    console.log(item)
+  
     return teacherCheck ==isteacher ? "You" : ( teacherCheck ? "Teacher Reply": "Student Reply"  )
   }
 

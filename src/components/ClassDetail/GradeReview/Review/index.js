@@ -37,7 +37,7 @@ export default function ReviewAssignment({data, setOpenDialog, openDialog, grade
         else 
             return null
     }
-    console.log(reviewData)
+    
     const idhomework = data!= null ? data.idhomework: null;
     const idaccount = data!= null ? data.idaccount: null;
 

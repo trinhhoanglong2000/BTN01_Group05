@@ -28,7 +28,7 @@ const DataElement = SortableElement(({ data, homework, index, setData, fullData 
         setAnchorEl(null);
     };
     const update = (event) => {
-        console.log(data)
+        
         setAnchorEl(null);
         setUpdate(true)
         setOpenDialog(true);

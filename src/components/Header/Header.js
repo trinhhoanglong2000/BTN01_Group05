@@ -64,10 +64,9 @@ export default function Header() {
         navigate("/Admin");
 
       }
-      console.log(data.data[0])
+      
       setAccount(data.data[0])
       
-      context.socket?.emit("newUser", data.data[0].id)
     } else {
       if (data.message === "jwt expired") localStorage.clear();
       context.socket?.emit("removeUser")
@@ -75,6 +74,8 @@ export default function Header() {
       setAuth(false);
     }
   };
+  context.socket?.emit("newUser", account.id);
+
   return (
     <>
       {!auth && <Navigate to="/login" />}

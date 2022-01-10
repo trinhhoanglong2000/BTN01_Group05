@@ -188,7 +188,7 @@ export const Grade = () => {
   //Excel handler
   const upload = () => {
     //coi thu console log la thay dc du lieu cua homework dc chon
-    console.log(homework[count]);
+    
     document.getElementById("uploadGrade").click();
     document.getElementById("uploadGrade").value = "";
   };

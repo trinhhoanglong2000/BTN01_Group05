@@ -93,12 +93,12 @@ export const People = () => {
         {teacher && <File />}
         {teacher && <Divider sx={{ marginY: "10px", background: "black" }} />}
         <Container>
-          <Typography variant="h5">Teacher</Typography>
+          <Typography variant="h5">TEACHER</Typography>
           <List data={classes.teacher} type={true} />
         </Container>
 
         <Container>
-          <Typography variant="h5">Student</Typography>
+          <Typography variant="h5">STUDENT</Typography>
           <List data={classes.student} type={true} />
         </Container>
       </Container>
