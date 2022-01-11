@@ -15,8 +15,8 @@ async function submitForm(event = null) {
     event.preventDefault();
   }
   var form = document.querySelector("#createForm");
-
-  var tokenAccess = form.querySelector('input[name="tokenAccess"]').value;
+  
+  var tokenAccess = document.querySelector('input[name="tokenAccess"]').value;
   // var url =
   //   "http://localhost:5000/mail/AccessInviteLink?accessToken=" + tokenAccess;
   let result = null;
@@ -86,6 +86,7 @@ export default function AccessLink({ openMode, onClose }) {
             autoFocus
             label="Token Access"
             name={"tokenAccess"}
+            className = "tokenAccess"
             value={tokenAccess}
             onChange={(e) => {
               setTokenAccess(e.target.value);
